@@ -1,0 +1,319 @@
+package PKG_Game;
+
+import PKG_Iffor.*;
+
+public class Game {
+
+	public static void main(String[] args) {
+/*		
+		//--반복문------------------------
+		int b = 0;
+		for(int a = 1 ; a <= 100 ; a++) {
+			
+			System.out.println(a);
+			
+			}
+		
+		//--- do while------------------- 
+		
+		int i = 1;
+		b = 0;
+		do {
+			
+			b = b + i;
+			
+			i += 1; // i = i + 1; / i++;
+			
+		}
+		while(i <= 100)
+		;
+		System.out.println(b);
+		
+		//---while -------------------------
+		
+		int j = 0;
+		b = 0;
+	
+		while(true) {
+			
+			j += 1;
+			b = b + j;
+						if(j == 100) {
+							break;
+						}
+			
+		}
+		;
+		
+		System.out.println(b);
+	
+		//----- 조건문-------------
+		//switch case
+		//조건이 명확할때
+		int num = 4;
+		String strOut = "초기값"; //1,2,3 이 아닌 case 4나 다른값이 들어가면 초기값이 나온다.
+		switch(num) {
+		
+				case 1 : strOut = "1입니다.";  // num값이 1 이면 이걸실행하고
+				break;
+				
+				case 2 : strOut = "2입니다.";
+				break;
+				
+				case 3 : strOut = "3입니다.";
+				break;
+		
+				
+				default : strOut = "default"; 
+				break; // 123이 아니면 무조건 얘가나온다
+		}
+		
+		System.out.println(strOut);
+
+		//------
+		
+		String str = "4";
+		switch(str) {
+			
+				case "철수" : str = "철수입니다.";
+				break;
+				
+				case "순희" : str = "순희입니다.";
+				break;
+				
+				default : System.out.println ("asdsadfasdfasd");  
+				break;
+		}
+		
+		System.out.println(str);
+		
+		// ------------------------
+		  
+		int result = 0;
+		for(int ii = 2; ii<=9 ; ii++ ) {
+			
+			for(int jj = 1; jj<=9; jj++) {
+				
+				result = ii * jj;
+				System.out.println( ii + "*" + jj + "=" + result);
+				
+			}
+		}
+/*	
+		//-----------------------------
+		// 배열
+		// datatype 선언
+		int a1 = 1;		
+		int b1 = a1;
+		
+		a1 = 13;
+		
+		System.out.println(a1); // 13
+		System.out.println(b1); // 1
+		
+			//==== 값에의한 복사: String 이 class인데 기본자료형(int)이 아니라서 원칙은 값복사가 아닌데 여기서만 예외로 둔다. call by value
+		String str1 = "홍길동";
+		String str2 = "김갑순";
+		
+		String str3 = str1;
+		str3 = "aaa";
+		
+		System.out.println(str1);
+		System.out.println(str3);
+
+*/
+		  //== 배열은 주소에 의한 복사
+/*	
+		int[] arr = new int[3];  // = [내가쓸갯수를 지정해주어야한다.]
+		arr[0] = 1;
+		arr[1] = 2;
+		arr[2] = 3;
+		
+		
+		arr[0] = arr[2];
+		
+		arr[0] = 1234;
+		arr[1] = 2111;
+		arr[2] = 3111;
+		
+	
+		int[] arr2 = new int[2]; 
+		arr2[0] = arr[0];
+		arr2[0] = 100;		
+		
+		arr2[1]=10;
+		
+		System.out.println(arr[0]);
+		System.out.println(arr2[0]);
+*/
+/*		
+	//---------- 주소에 의한 복사/통째로 복사 
+		int[] arr = new int[3]; 
+		arr[0] = 1;
+		arr[1] = 2;
+		arr[2] = 3;
+		
+		int[] arr3 = arr;
+		//arr3[0] = 1234;
+		arr3[0] = 1111;
+		arr[0] = 5555; // 이거적으면 둘다 5555로 바뀐다	
+		System.out.println(arr[0]);
+		System.out.println(arr3[0]);
+*/	
+		
+ //------------------7,8,교시
+		
+		//1)
+		String st1 = "홍길동"; // call by reference 지만- >  value	
+		String st2 = "홍길동";
+		String st3 = st1;
+		st3 = "전우치";
+		
+		System.out.println(st3);
+		System.out.println(st1);
+		//java 에서 string 을 할당값으로 선언을 하고 받으면 마치 call by value 처럼 움직인다. 
+//--------
+		// 2) call by reference
+		String st4 = new String("홍길동");
+		String st5 = new String("홍길동");
+		
+		
+		// 1-1) String 으로 받아온 것들은 value에 의한 복사
+		if(st1 == st2) {
+			System.out.println("같다");
+		}
+		else {
+			System.out.println("다르다");
+		}
+		
+		//2-1) new String 으로 받아온것들 reference에 의한 복사
+		if(st4 == st5) {
+			System.out.println("같다 - object");	
+		}
+		else {
+			System.out.println("다르다 - object");
+		}
+		//--------------------
+		if(st4.equals(st5)) //두객체가 가지고 있는 실제 값이 같냐고 물어보는 것이다.  //equals쓰면 st4 객체가 가지고 있는 value 와 st5가 가진 value 가 같냐고 뭍는것이다.
+		{
+			System.out.println("같다 - object_value");
+		}
+		else {
+			System.out.println("다르다 - object_value");
+		}
+	
+		//-----------------------------------	
+		
+		int aa = 4;
+		long bb = 4L;
+		double cc = 4.00;
+		float dd = 4.00f;
+		//call by value
+		
+		if(aa == dd) {
+			
+			System.out.println("같다");
+			
+		}
+		else {
+			
+			System.out.println("다르다");
+		}
+		
+//정리 : call by value
+		// byte, short, char, int, long
+		// float, double
+		// String str = ""; // call by value
+		// String str = new String ("홍길동"); // call by reference
+
+/*
+		//배열
+
+		String[] strs = new String[5]; // call by reference  ...?
+		
+		strs[0] = "이길동0"; //String
+		strs[1] = "이길동1"; //String
+		strs[2] = "이길동2"; //String
+		 
+		String[] strs2 = new String[5]; 
+		
+		strs2[0] = "이길동0"; //String
+		strs2[1] = "이길동1"; //String
+		strs2[2] = "이길동2"; //String
+		
+		if(strs == strs2){
+			System.out.println("배열이/주소가 같다");
+		}
+		else {
+			System.out.println("배열이/주소가 다르다");
+		}
+*/		
+	
+		//배열2
+	
+		
+		String[] strs = new String[4]; // call by reference
+		
+		strs[0] = "홍길동"; //String // call by value
+		strs[1] = "전우치"; //String
+		strs[2] = "이길동"; //String
+		strs[3] = new String("홍길동"); //call by reference // class(new String) 의 기본 은 reference
+		
+		
+		if(strs[0] == strs[3]){  // strs[0].equals( strs[3] ) 
+			System.out.println("홍길동이 같다");
+		}
+		else {
+			System.out.println("홍길동이 다르다");
+		}
+	
+		//----------묵시적 암시적 복습------- ?
+		
+		int aaa = 145; // 묵시적 자동 형 변환  int -> long
+		
+		long[] pp = new long[3];
+		pp[0] = aaa;
+		pp[1] = 54634;
+		pp[2] = 1231231242123423634L;
+		
+		double[] uu = new double[2];
+		uu[0] = 124.23452;
+		uu[1] = 1544;
+		
+		byte[] bytes = new byte[1024];
+		
+		int results = 0;
+		for(int iii=0; iii<bytes.length ; iii++ ) {
+			
+			results = iii % 100;
+			bytes[iii] = (byte)results;
+			
+			System.out.println( bytes[iii] );
+		}
+	
+		//지역변수 iii 는 for가 끝나면 사라진다. 그래서 아래에 iii 다시 써도됨 
+		
+		// 암시적 형 변환 long -> int 불가
+		long pn = 2100000000000L;
+		int[] ints = new int[3];
+		ints[0] = (int)pn;
+		ints[1] = (int)pn;
+		ints[2] = (int)pn;
+		
+		System.out.println(ints[0]);
+		
+	/*
+		for(int iii = 0; iii< ints.length; iii++) {
+			
+			ints[iii] = iii;
+			
+			System.out.println( ints[iii] );
+			
+		}
+	*/
+	
+		//나중에 상속 > down casting, up casting
+		
+	} // main(String[] args) {
+
+}
