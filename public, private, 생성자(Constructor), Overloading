@@ -1,0 +1,377 @@
+**접근 제한자**
+
+- **public :** 외부 클래스가 자유롭게 사용할 수 있도록 한다.
+- **protected :** 같은패키지 또는 자식 클래스에서 사용할 수 있도록 한다.
+- **private** : 외부에서 사용될 수 없도록 한다.
+- **default :** 같은 패키지에 소속된 클래스에서만 사용 가능하다
+
+* public 쓰면 다른클래스에서 . (점을) 찍으면 뭘 사용했는지 아래 창에 뜨지만 private을 사용하면 뜨지 않는다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fda6b235-a599-44ee-af92-1bd167182434/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fda6b235-a599-44ee-af92-1bd167182434/Untitled.png)
+
+```jsx
+/* 회원이 상품을 구매한 클래스*/
+
+//1) private  으로 
+		// new 하고 객체가 만들어질때만 호출됨, 한번호출되면 다시호출할수가없음 
+		Member mem = new Member("M001", "홍길동");	
+		mem.memBuy("새우깡",500);
+		mem.memBuy("새우깡",800); // 또구매해도 여전히 홍길동이다 
+		mem.memBuy("새우깡",800); 
+		mem.memBuy("새우깡",800);
+
+		// 사람이 두명이니까 다시만들어야한다 
+		Member mem2 = new Member("M002", "김갑순"); 
+		mem2.memBuy("맛동산",1000);
+		mem2.memBuy("맛동산",1000);
+
+//2)public 으로  차이가 무엇이냐 / 이걸부르면 
+		
+		Member mem2 = new Member();
+		mem2.memID = "M001";
+		mem2.memName = "홍길동";
+	  mem2.memBuy("새우깡", 500);
+		
+/ 만약 같은사람이라도 바꿔서 두번부를수있다 / 이렇게 바꾸면 잘못됨../ 나중고민거리
+		mem2.memID = "M002";  
+		mem2.memName = "김갑순";		
+		mem2.memBuy("새우깡", 500);
+```
+
+```jsx
+package PKG_Sell;
+
+public class Member {
+
+	1)private 2)public String memID;  
+	1)private 2)public String memName;
+	1)private 2)public int totalPrice = 0;
+```
+
+---
+
+---
+
+```jsx
+import PKG_Sell.*;
+import PKG_EX.*;
+
+public class StartClass {
+
+		
+	}
+	
+	public static void main(String[] args) {
+					
+		
+		/* 회원이 상품을 구매한 클래스*/ 
+
+		//1) private  
+		//Member mem = new Member("M001");
+		Member mem = new Member("M001", "홍길동");	 
+		mem.memBuy("새우깡",500);
+		mem.memBuy("새우깡",800); 
+		mem.memBuy("새우깡",800); 
+		mem.memBuy("새우깡",800);
+		
+@		int totalPrice = mem.getTotalPrice();
+		System.out.println("구매총가격 : " + totalPrice);
+		
+		
+		Member mem2 = new Member("M002", "김갑순"); 
+		mem2.memBuy("맛동산",1000);
+		mem2.memBuy("맛동산",1000);
+		
+		
+@		int totalPrice2 = mem2.getTotalPrice();
+		System.out.println("구매총가격 : " +totalPrice2);
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7075540f-e4ef-4894-9157-1aebc77dce8e/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7075540f-e4ef-4894-9157-1aebc77dce8e/Untitled.png)
+
+```jsx
+package PKG_Sell;
+
+public class Member {
+
+	private String memID;  
+	private String memName;
+	private int totalPrice = 0;
+			
+	public void memBuy(String proName, int prodPrice) {
+		
+		totalPrice += prodPrice;  // 총가격
+		
+	System.out.println(memName + "이 "+ proName + "을" + prodPrice + "원에 구매를 했따" );
+// System.out.println(memName + "이 "+ proName + "을" + prodPrice + "원에 구매를 했따" + " 구매 총가격" + totalPrice); 
+// $ "구매 총가격" + totalPrice $
+	}
+		
+	
+//	@ 이걸 써주면 / 이 메서드를 만들어주면/ 총가격을 다른곳에서 쓸수있다
+// $ 만약 class 만들어주는 사람이 쓰는걸 원하지 않는다면 @를 만들지않고
+// $ 위에 $구매총가격$ 넣음 
+
+@	public int getTotalPrice() {
+		return totalPrice; // 돌려줘라 
+		
+	}
+			
+} // Member {
+```
+
+```jsx
+import PKG_Sell.*;
+import PKG_EX.*;
+
+public class StartClass {
+
+	public static void main(String[] args) {
+					
+		
+		/* 회원이 상품을 구매한 클래스*/ 
+
+		//1) private  
+		Member mem = new Member("M001", "홍길동");	 
+		mem.memBuy("새우깡",500);
+		mem.memBuy("새우깡",800); 
+		mem.memBuy("새우깡",800); 
+		mem.memBuy("새우깡",800);		
+		
+		Member mem2 = new Member("M002", "김갑순"); 
+		mem2.memBuy("맛동산",1000);
+		mem2.memBuy("맛동산",1000);
+		
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/18e8278a-81b5-47ec-8e23-9a3be0c5233d/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/18e8278a-81b5-47ec-8e23-9a3be0c5233d/Untitled.png)
+
+```jsx
+package PKG_Sell;
+
+public class Member {
+
+	private String memID;  
+	private String memName;
+	private int totalPrice = 0;
+			
+	public void memBuy(String proName, int prodPrice) {
+		
+		totalPrice += prodPrice;  // 총가격
+	
+System.out.println(memName + "이 "+ proName + "을" + prodPrice + "원에 구매를 했따" + " $ 구매 총가격" + totalPrice); 
+	 // $ "구매 총 가격" + totalPrice $
+	}
+		
+
+// $ 만약 class 만들어주는 사람이 총가격을 다른곳에서 쓰는걸 원하지 않는다면 @를 만들지않고
+// $ 위에 $구매 총 가격 넣음 
+
+} // Member {
+```
+
+---
+
+---
+
+**생성자 Constructor:** class가 instance화 되어지면 자동으로 (딱 한번만!!)실행되는 메써드
+// 이후 호출이 불가 하다
+
+method 의 **overloading :** 매개변수를 달리하는 생성자를 여러개 선언하는 것
+ **this() :** 객체자신의 또 다른 생성자를 호출하는 것
+
+Method 매개변수만 다른, 같은 Method 의 이름으로 만들 수 있다....
+데이터 타입이 다른 것이 들어오더라도 자동으로 선택되어져서 실행이 됨
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3ae0a78f-c265-4c43-8ba8-049d6e531461/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3ae0a78f-c265-4c43-8ba8-049d6e531461/Untitled.png)
+
+```jsx
+import PKG_EX_01.*;
+import PKG_Sell_01.*;
+
+public class StartClass_01 {
+
+	
+	public static void main(String[] args) {
+			
+		Member_01 mb1 = new Member_01(); ☆
+		mb1.memBuy_01("아이폰12", 1130000);  //memBuy_01(String Pro_Name, int pro_Price )
+		mb1.memBuy_01("맥북", 1680000);
+		
+		Member_01 mb2 = new Member_01(); ☆
+		mb2.memBuy_01("아이폰12 pro", 1430000);
+		
+		Member_01 mb3 = new Member_01("김뚱땅"); ○
+		mb3.memBuy_01("아이폰12 pro", 1430000);
+		mb3.memBuy_01("아이폰12 pro", 1430000);
+		
+		Member_01 mb4 = new Member_01("M005" , "김연님"); ●
+		mb4.memBuy_01("맥북 pro", 2880000);
+		mb4.memBuy_01("맥북 pro + 램추가", 3080000);
+	}
+	
+}
+```
+
+```jsx
+package PKG_Sell_01;
+
+public class Member_01 {
+	
+	private String memID;
+	private String memName;
+
+	//문법 public int void 없다 
+
+☆ public Member_01() {
+		
+		this.memID = "M001";
+		this.memName = "비회원";	
+				
+	}
+	
+○ public Member_01(String memName) {
+		
+		this.memID = "M002";
+		this.memName = memName;
+				
+	}
+
+ ● public Member_01(String memID ,String memName) {
+		
+		this.memID = memID;
+		this.memName = memName;
+	
+		
+	}
+	
+	
+	// 출력 행위 설정
+	
+	public void memBuy_01(String Pro_Name, int pro_Price ) {
+		
+		System.out.println(memName + " 이 " + Pro_Name + "을 " + pro_Price + "원 에 구매완료 하였습니다");
+		
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e523e24a-1785-4b2f-b8a6-b7bbf164caa5/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e523e24a-1785-4b2f-b8a6-b7bbf164caa5/Untitled.png)
+
+---
+
+---
+
+```jsx
+import PKG_EX_01.*;
+import PKG_Sell_01.*;
+
+public class StartClass_01 {
+
+	
+	public static void main(String[] args) {
+			
+		Member_01 mb1 = new Member_01();
+		mb1.memBuy_01("아이폰12", 1130000);
+		mb1.memBuy_01("맥북", 1680000);
+		
+		Member_01 mb2 = new Member_01();
+		mb2.memBuy_01("아이폰12 pro", 1430000);
+		
+		Member_01 mb3 = new Member_01("김뚱땅");
+		mb3.memBuy_01("아이폰12 pro", 1430000);
+		mb3.memBuy_01("아이폰12 pro", 1430000);
+		
+		Member_01 mb4 = new Member_01("M005" , "김연님");
+		mb4.memBuy_01("맥북 pro", 2880000);
+		mb4.memBuy_01("맥북 pro + 램추가", 3080000);
+		
+		
+		Member_01 mb5 = new Member_01();
+		mb5.memBuy_01(1000);
+		mb5.memBuy_01(1000000);
+		mb5.memBuy_01(2100L);
+		mb5.memBuy_01(10000000000078L);
+		mb5.memBuy_01(10000.837284);
+		mb5.memBuy_01();
+		
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/197cfe1e-f240-41e6-9290-26815e5f0b6c/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/197cfe1e-f240-41e6-9290-26815e5f0b6c/Untitled.png)
+
+```jsx
+package PKG_Sell_01;
+
+public class Member_01 {
+	
+	private String memID;
+	private String memName;
+	
+	private int total_Price = 0;
+
+	//문법 public int void 없다 
+
+	public Member_01() {
+		
+		this.memID = "M001";
+		this.memName = "비회원";	
+				
+	}
+	
+	public Member_01(String memName) {
+		
+		this.memID = "M002";
+		this.memName = memName;
+				
+	}
+
+	public Member_01(String memID ,String memName) {
+		
+		this.memID = memID;
+		this.memName = memName;
+	
+		
+	}
+	
+	
+	// 출력 행위 설정
+	
+	public void memBuy_01(String Pro_Name, int pro_Price ) {
+		
+		total_Price += pro_Price; // total_Price + pro_Price;
+		
+		System.out.println(memName + " 이 " + Pro_Name + "을 " + pro_Price + "원 에 구매완료 하였습니다" +" / 구매 총 가격은 " + total_Price);
+		
+	}
+	
+	// int long double 매개변수 없을시 예시
+	public void memBuy_01(int pro_Price) {
+		
+		System.out.println("int 실행 가격:" + pro_Price);
+	}
+	
+	public void memBuy_01(long pro_Price) {
+		
+		System.out.println("long 실행 가격:" + pro_Price);
+	}
+	
+	public void memBuy_01(double pro_Price) {
+		
+		System.out.println("double 실행 가격:" + pro_Price);
+	}
+	
+	public void memBuy_01( ) {
+		
+		System.out.println("매개변수가 없습니다");
+	}
+	
+}
+```
+
+---
+
+---
