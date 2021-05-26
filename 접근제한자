@@ -1,0 +1,452 @@
+접근제한자
+*1. private 필드나 메써드를 만들면 class 내부에서만 사용이 가능하다.
+*2. protected, default 는 같은 package 내부의 클래스에서만 접근이 가능하다.
+*3. protected -- 상속에서 사용이 가능하다 / default는 사용 불가
+*4. public : 클래스 사용자 마음대로 사용 가능 하다.
+
+1 교시
+
+```jsx
+package PKG_Std;
+
+public class Student {
+
+	//1. 접근제한자 - 클래시를 사용하는 개발자가 해당 필드, 메써드에 어디까지 접근이 가능한가
+	/*
+	 1. public
+	 2. protected
+	 3. default
+	 4. private
+	 */
+	
+	public String sName1;
+	protected String sName2;
+	String sName3;
+	private String Name4;
+	
+	//*1. private 필드나 메써드를 만들면 class 내부에서만 사용이 가능하다.
+	//*2. protected, default 는 같은 package 내부의 클래스에서만 접근이 가능하다.
+	//*3. protected -- 상속에서 사용이 가능하다 / default는 사용 불가
+	//*4. public : 클래스 사용자 마음대로 사용 가능 하다.
+	
+}
+```
+
+```jsx
+package PKG_Std;
+
+import PKG_Test.Classes;
+
+public class StdExam {
+
+	public static void main(String[] args) {
+		
+		Student st = new Student();
+		st.sName1 = "김";
+		st.sName2 = "갑";
+		st.sName3 = "순";
+		
+		Student st2 = new Student();
+		st2.sName1 = "홍";
+		st2.sName2 = "길";
+		st2.sName3 = "동";
+		
+		Student st3 = new Student();
+		st3.sName1 = "전";
+		st3.sName2 = "우";
+		st3.sName3 = "치";
+		
+		Student st4 = new Student();
+		st4.sName1 = "김";
+		st4.sName2 = "갑";
+		st4.sName3 = "돌";
+		
+		Classes firstClass = new Classes();
+		firstClass.addStudent(st);
+		firstClass.addStudent(st2);
+		firstClass.addStudent(st3);
+		firstClass.addStudent(st4);
+		
+		
+		// 여기서는 sName1 sName2 sName3 다 찍을 수 있다
+		
+		Student[] students = firstClass.getStudentsList();
+		
+		for(int i = 0 ; i< students.length; i++) {
+			
+			System.out.println(students[i].sName1 + students[i].sName2 + students[i].sName3 );  // *2 .
+		}
+		
+
+	}
+
+}
+```
+
+```jsx
+package PKG_Test;
+
+import PKG_Std.Student;
+
+public class Classes {
+
+	private Student[] students; 
+	private int arrNum;
+	
+	
+	public Classes() {
+		
+		this.students = new Student[3];
+		this.arrNum = 0;
+		
+	}
+	
+	public void addStudent(Student student) {
+		
+		if(arrNum < 3) {
+		students[arrNum] = student;
+		arrNum++;
+		}
+		
+		else {
+			
+			System.out.println("4명이상은 등록할 수 없습니다.");
+		}
+		
+	}
+----------------------------------------------------------------	
+	public Student[] getStudentsList() {  // Student[] = void
+		
+		/* sName1 여기서는 public 하나만 볼수있다 
+		 
+		for(int i = 0 ; i< students.length; i++) {
+			
+			System.out.println(students[i].sName1);  // *2 . 
+		}
+		*/
+		
+		return students;
+	}
+
+-------------------------------------------------------	
+		public void getStudentsList() {  // Student[] = void
+
+				for(int i = 0 ; i< students.length; i++) {
+					
+					System.out.println(students[i].sName1);  // *2 . 
+				}
+	
+	}
+	
+	
+}//Classes {
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/31d4dc0d-6221-4a1d-a256-4e6827585b44/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/31d4dc0d-6221-4a1d-a256-4e6827585b44/Untitled.png)
+
+---
+
+---
+
+```jsx
+package PKG_Std;
+
+public class Student {
+
+	//1. 접근제한자 - 클래시를 사용하는 개발자가 해당 필드, 메써드에 어디까지 접근이 가능한가
+	/*
+	 1. public
+	 2. protected
+	 3. default
+	 4. private
+	 */
+	
+	//st
+	public String sName1;
+	protected String sName2;
+	String sName3;
+	
+	private String Name4;
+	
+	//*1. private 필드나 메써드를 만들면 class 내부에서만 사용이 가능하다.
+	//*2. protected, default 는 같은 package 내부의 클래스에서만 접근이 가능하다.
+	//*3. protected -- 상속에서 사용이 가능하다 / default는 사용 불가
+	//*4. public : 클래스 사용자 마음대로 사용 가능 하다.
+	
+	
+	
+}
+```
+
+```jsx
+package PKG_Std;
+
+import PKG_Test.Classes;
+
+public class StdExam {
+
+	public static void main(String[] args) {
+		
+		Student st = new Student();
+		st.sName1 = "김";
+		st.sName2 = "갑";
+		st.sName3 = "순";
+		
+		Student st2 = new Student();
+		st2.sName1 = "홍";
+		st2.sName2 = "길";
+		st2.sName3 = "동";
+		
+		
+		Student st3 = new Student();
+		st3.sName1 = "전";
+		st3.sName2 = "우";
+		st3.sName3 = "치";
+		
+		Student st4 = new Student();
+		st4.sName1 = "김";
+		st4.sName2 = "갑";
+		st4.sName3 = "돌";
+		
+			// 결과값: 4명이상은 등록할 수 없습니다.
+		Classes firstClass = new Classes();
+		
+		//Classes firstClass = new Classes();
+		//public void addStudent(Student student) {
+		
+		
+		firstClass.addStudent(st);
+		firstClass.addStudent(st2);
+		firstClass.addStudent(st3);
+		firstClass.addStudent(st4);
+		
+		
+		// 여기서는 sName1 sName2 sName3 다 찍을 수 있다
+		
+		Student[] students = firstClass.getStudentsList();
+		
+		for(int i = 0 ; i< students.length; i++) {
+			
+			System.out.println(students[i].sName1 + students[i].sName2 + students[i].sName3 );  // *2 .
+		}
+		
+		
+
+	}
+
+}
+```
+
+```jsx
+package PKG_Test;
+
+import PKG_Std.Student;
+
+public class Classes {
+
+	private Student[] students; 
+	private int arrNum;
+	
+	
+	
+	public Classes() {  // Student st = new Student(); 이게 실행될때 자동으로 한번만 실행되는 생성자
+		this.students = new Student[3];
+		//Student[] students = new Student[3];
+		
+		this.arrNum = 0;
+		
+	}
+	
+	/* @ 예시
+	addStudent("test");
+	
+	public void addStudent(String name){
+		system.out.println(name);
+
+	}*/
+	
+	
+	public void addStudent(Student student) {  // @ 
+		//public void addStudent(st1)
+		//public void addStudent(Student st1)
+		//public void addStudent(st2)
+		
+		/*
+		public String sName1;
+		protected String sName2;
+		String sName3;
+		
+		Student st1 = new Student();
+		st1.sName1 = ""
+		st1.sName2
+		st1.sName3
+		
+		Student st2 = new Student();
+		st2.sName1
+		st2.sName2
+		st2.sName3
+		 */		
+		
+		if(arrNum < 3) {
+			
+		students[arrNum] = student;
+		//students[0] = student = st;
+		//students[0] = st;
+		//arrNum 0 -> 1
+		
+		
+		//students[1] = student = st2;
+		//students[1] = st2;
+		//arrNum 1 -> 2
+		
+		arrNum++;
+		System.out.println("정상등록");
+		
+		}
+		
+		else {
+			
+			System.out.println("4명이상은 등록할 수 없습니다.");
+		}
+		
+	}
+	
+	public Student[] getStudentsList() {  // 기본자료형말고 사용자가 만든 자료형을 쓸수있다/ -> Student[] = / void
+		
+		/* sName1 여기서는 public 하나만 볼수있다 
+		 
+		for(int i = 0 ; i< students.length; i++) {
+			
+			System.out.println(students[i].sName1);  // *2 . 
+		}
+		*/
+		
+		return students;
+	}
+	
+	
+	
+	
+}//Classes {
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f9f87371-d468-4642-93f5-42d8a748f2e1/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f9f87371-d468-4642-93f5-42d8a748f2e1/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/679b4ae5-6719-489e-8059-c377601c8078/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/679b4ae5-6719-489e-8059-c377601c8078/Untitled.png)
+
+---
+
+나혼자
+
+---
+
+```jsx
+package PKG_Std_01;
+
+public class Student_01 {
+	
+	public String cName01;
+	protected String cName02;
+	String cName03;
+	
+	private String cName04; 
+
+}
+```
+
+```jsx
+package PKG_Std_01;
+
+import PKG_Test_01.Classes_01;
+
+public class StdExam_01 {
+
+	public static void main(String[] args) {
+		
+		Student_01 cat1 = new Student_01();
+		cat1.cName01 = "김";
+		cat1.cName02 = "뚱";
+		cat1.cName03 = "땅";
+		
+		Student_01 cat2 = new Student_01();
+		cat2.cName01 = "김";
+		cat2.cName02 = "연";
+		cat2.cName03 = "님";
+		
+		Student_01 cat3 = new Student_01();
+		cat3.cName01 = "김";
+		cat3.cName02 = "래";
+		cat3.cName03 = "기";
+		
+	
+		// 수업에 고양이 등록
+		
+		Classes_01 catClass = new Classes_01();
+		catClass.addCats(cat1);
+		catClass.addCats(cat2);
+		catClass.addCats(cat3);
+		
+		
+		//
+		//for 돌려서 이름 찍어내기 
+		Student_01[] catsss = catClass.getCatList();
+		
+		for(int i=0; i<catsss.length; i++ ) {
+			
+			System.out.println( catsss[i].cName01 + catsss[i].cName02 + catsss[i].cName03 );
+		}
+		
+	}
+
+}
+```
+
+```jsx
+package PKG_Test_01;
+
+import PKG_Std_01.Student_01;
+
+public class Classes_01 {
+
+	//
+	private Student_01[] catsss;
+	private int arrNum;
+	
+	
+	public Classes_01 () {
+		this.catsss = new Student_01[2];
+		this.arrNum = 0;		
+	}
+	
+	// 행위
+	
+	public void addCats(Student_01 cats) {
+		
+		if(arrNum < 2) {
+			
+			catsss[arrNum] = cats;
+			arrNum++;
+		}
+		
+		else {
+			
+			System.out.println("3마리 이상은 등록이 불가합니다.");
+			
+		}
+		
+		
+	}
+	
+	// cat 이름 담겨있는..?
+	
+	public Student_01[] getCatList() {
+		
+		return catsss;
+		
+	}
+	
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a51b17d5-6643-492c-baba-e9ed3ca89276/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a51b17d5-6643-492c-baba-e9ed3ca89276/Untitled.png)
