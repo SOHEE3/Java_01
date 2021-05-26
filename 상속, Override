@@ -1,0 +1,658 @@
+● 상속이란?
+클래스를 정의 할 때 이미 구현된 클래스를 상속(ingeritance) 받아서 속성이나 기능이 확장되는 클래스를 구현함
+상속하는 클래스 : 상위 클래스, parent class, base class, super class
+상속받는 클래스 : 하위 클래스, child class, derived class, subclass
+클래스 상속 문법
+class B extends A {
+
+}
+상위 클래스는 하위 클래스 보다 일반적인 의미를 가짐
+하위 클래스는 상위 클래스 보다 구체적인 의미를 가짐
+-extends 뒤에는 단 하나의 class만 사용할 수 있음
+
+- Childs클래스에서 Parents클래스를 상속받았기 때문에 Childs클래스 객체생성 시 모두 사용가능하다
+- super - 부모 관련 변수 및 메소드를 지정 시 사용한다
+- this - 자식 관련 변수 및 메소드를 지정 시 사용한다
+- 사용 이유 - 부모, 자식 클래스 간 서로 변수 명, 메소드 명이 같을 경우 구분을 해주기 위해서 사용합니다
+- // 부모관련 변수를 자식 변수에 넣는게 아니고 자식에서 가져온다?
+
+스케치
+
+---
+
+캐릭터 Character  - 추상화 
+1. 속성(필드) - 이름(name)
+	
+2. 행위 - 간다( run() )	
+	- 멈춘다 ( stop() )
+	- 난다 ( fly() )
+
+전투사 Fighter
+추가적으로 
+1.속성 - 무기이름 ( wName )
+2.행위 - 싸운다 ( fight() )
+	- 난다
+
+마법사 Wizard
+1.속성 - 마법 종류 ( wKind )
+2. 행위 - 마법을 사용 ( useMagic() )
+	- 난다 - 새처럼 날아다닌다.
+
+치료사 Healer
+1.속성 - 약 종류 ( mName )
+2. 행위 - 치료를 한다.  ( )
+	- 난다 - 이게 날아다니는거 맞는지
+
+[객체지향]
+1) 추상화 *개념이해가 어려움
+2) 캡슐화 *개념이해가 어려움
+3) 다형성 *코딩이 어려움
+
+---
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/04f6fc76-a5e8-4ad5-9884-5e28132ee639/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/04f6fc76-a5e8-4ad5-9884-5e28132ee639/Untitled.png)
+
+```jsx
+package PKG_Game;
+
+//추상화된 클래스
+public class Character {
+
+	//1.속성
+	protected String cName;
+	
+	public Character(String cName) {
+		
+		this.cName = cName;
+			
+	}
+	
+	//2.행위
+	public void run() {
+		System.out.println(cName + "가 간다. ");
+	}
+	
+	public void stop() {
+		System.out.println(cName + "가 멈춘다. ");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Game;
+// Character  
+
+public class Fighter extends Character {
+
+	private String wName =""; //무기이름 / wName; // wName =""; > 다르다 : 참조없음null// " "
+	
+	public Fighter(String cName) { //wName 이 빈값이되니까 무기를 들고있지 않다 (오버로딩)
+		super(cName);
+	}
+	
+	public Fighter(String cName, String wName) {  // 무기를 들고있고 있었다 (오버로딩)
+		super(cName);
+		this.wName = wName;
+	}
+
+//-----------------------
+	//고치고싶으면
+	public void setWName(String wName) {
+		this.wName = wName;
+	}
+	
+	//뭔지 알고싶으면
+	public String getWName() {
+		return this.wName;
+	}
+	
+//---------------	
+	public void Fight() {
+		
+		System.out.println(cName + "가 " + this.wName +"을 가지고 싸운다.");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Game;
+
+//Character  
+public class Wizard extends Character {
+
+	private String wName; // 마법 이름 
+	
+	public Wizard(String cName, String wName) {
+		super(cName);
+		this.wName = wName;
+	}
+	
+	public String getWName() {  
+		return this.wName;
+	}
+	
+	//행위-----------------------
+	public void magic() {
+		System.out.println(cName + "마법을 사용한다");
+		
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Game;
+
+//Character  
+public class Healer extends Character{
+
+	private String mName;
+	
+	public Healer(String cName, String mName) {  // 약이름 속성 못바꾼다 
+		super(cName);
+		this.mName = mName;
+	}
+	
+	// 행위------------ 
+	public void heal() {
+		
+		System.out.println(cName + "이 치료한다");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Main;
+
+import PKG_Game.Fighter;
+
+public class GameExample {
+
+	public static void main(String[] args) {
+		
+		Fighter f1 = new Fighter("싸움꾼", "총");
+		f1.run();
+		f1.stop();
+		f1.Fight();
+		String f1_Weapon = f1.getWName();  // 들고있는 무기가 뭐인가 
+		
+		f1.setWName("기관총");
+		f1.Fight();
+		f1_Weapon = f1.getWName();
+		
+		Fighter f2 = new Fighter("야옹이");
+		f2.run();
+		f2.stop();
+		f2.Fight(); // 없이싸우다가 
+		String f2_Weapon = f1.getWName(); // 없이나오다가
+		
+		
+		f2.setWName("대포"); // 무기를 들었따
+		f2_Weapon = f1.getWName(); 
+		f2.Fight();
+		
+		//String f2_Weapon = f1.getWName(); // 대포가나옴
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c49962d4-b2d1-48d5-973f-b927bc493278/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c49962d4-b2d1-48d5-973f-b927bc493278/Untitled.png)
+
+---
+
+2교시
+
+main
+
+```jsx
+package PKG_Main;
+
+import PKG_Game.*;
+//import PKG_Game.Character;
+
+public class GameExample {
+
+	public static void main(String[] args) {
+		
+		Fighter f1 = new Fighter("싸움꾼", "총");
+		f1.run();
+		f1.stop();
+		f1.Fight();
+		String f1_Weapon = f1.getWName();  // 들고있는 무기가 뭐인가 
+		System.out.println("f1 : " + f1_Weapon);
+		
+		
+		f1.setWName("기관총");
+		f1.Fight();
+		f1_Weapon = f1.getWName();
+		f1.fly();
+		
+		
+		Fighter f2 = new Fighter("야옹이");
+		f2.run();
+		f2.stop();
+		f2.Fight(); // 없이싸우다가 
+		String f2_Weapon = f2.getWName(); // 없이나오다가
+		System.out.println("f2 : " + f2_Weapon);
+		
+		
+		f2.setWName("대포"); // 무기를 들었따
+		f2_Weapon = f2.getWName(); // 대포가나옴
+		f2.Fight();
+		f2.fly();
+		
+		
+		//--------------
+		Wizard w1 = new Wizard("손오공", "좋은 마법");
+		w1.run();
+		w1.stop();
+		w1.magic();
+		w1.fly();
+		
+		String mName = w1.getWName();
+		
+		//------------------	
+		Healer h1 = new Healer("치료사", "모기약");
+		h1.run();
+		h1.stop();
+		h1.heal();
+		h1.fly();
+		
+
+	}
+
+}
+```
+
+```jsx
+package PKG_Game;
+// Character  
+
+public class Fighter extends Character {
+
+	private String wName =""; //무기이름 / wName; // wName =""; > 다르다 : 참조없음null// " "
+	//wName 무기이름
+
+	public Fighter(String cName) { //wName 이 빈값이되니까 무기를 들고있지 않다 (오버로딩)
+		super(cName);
+		this.wName = "무기가 없습니다";
+	}
+	
+	public Fighter(String cName, String wName) {  // 무기를 들고있고 있었다 (오버로딩)
+		super(cName);
+		this.wName = wName;
+		//this.wName = "총";
+	}
+
+//-----------------------
+	//고치고싶으면
+	public void setWName(String wName) { 
+		this.wName = wName;  
+	}
+	
+	//뭔지 알고싶으면
+	public String getWName() {
+		return this.wName;  //# 이 wName
+	}
+	
+//---------------	
+	public void Fight() {
+		
+		System.out.println(cName + "가 " + this.wName +"을 가지고 싸운다.");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Game;
+
+//Character  
+public class Wizard extends Character {
+
+	private String wName; //wName 여기선 마법 이름 
+	
+	public Wizard(String cName, String wName) {
+		super(cName);
+		this.wName = wName;
+	}
+	
+	public String getWName() {  
+		return this.wName;    ////# 이 wName 다르다
+	}
+	
+	//행위-----------------------
+	public void magic() {
+		System.out.println(cName + " 마법을 사용한다");	
+	}
+	
+	@Override  // 메서드의 재정의 : 상속을 받긴받는데 이 부분은 새로 정의 
+	public void fly() {  // 리턴타입과 이름은 똑같아야 한다 *  void fly()
+		System.out.println(cName + " 새처럼 날아다닌다.");
+	}
+	
+	
+	
+}
+```
+
+```jsx
+package PKG_Game;
+
+//Character  
+public class Healer extends Character{
+
+	private String mName;
+	
+	public Healer(String cName, String mName) {  // 약이름 속성 못바꾼다 
+		super(cName);
+		this.mName = mName;
+	}
+	
+	// 행위------------ 
+	public void heal() {
+		
+		System.out.println(cName + "가 치료한다");
+	}
+	
+	@Override  // 메서드의 재정의
+	public void fly() {  
+		System.out.println(cName + " 이게 날아다니는거 맞는지");
+	}
+	
+	
+	
+}
+```
+
+```jsx
+package PKG_Game;
+
+//추상화된 클래스
+public class Character {
+
+	//1.속성
+	protected String cName;
+	
+	public Character(String cName) {
+		
+		this.cName = cName;
+			
+	}
+	
+	//2.행위
+	public void run() {
+		System.out.println(cName + "가 간다. ");
+	}
+	
+	public void stop() {
+		System.out.println(cName + "가 멈춘다. ");
+	}
+	
+		// 상속받는 각각의 캐릭터들의 나는 방법이 다 달라요
+	public void fly() {
+		System.out.println(cName + "가 난다. ");
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3821125d-0351-4826-b458-3876c7b30205/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3821125d-0351-4826-b458-3876c7b30205/Untitled.png)
+
+메서드의 재정의 @Override
+
+---
+
+---
+
+나혼자
+
+---
+
+```jsx
+package PKG_Main;
+
+import PKG_Game_01.*;
+
+public class gameEx_01 {
+
+	public static void main(String[] args) {
+		
+		Fighter_01 f_cat1 = new Fighter_01("김뚱땅", "냥냥펀치");
+		f_cat1.run();
+		f_cat1.stop();
+		f_cat1.fly();
+		f_cat1.fight();
+		String WWW01 = f_cat1.getFName();
+		System.out.println("무기 : " + WWW01);
+	
+		Wizard_01 w_cat1 = new Wizard_01("김연님", "꾹꾹이");
+	
+		w_cat1.run();
+		w_cat1.stop();
+		w_cat1.fly();
+		String WWW02 = w_cat1.getFName();
+		System.out.println("무기 : " + WWW02);
+		
+		
+	}
+
+}
+```
+
+```jsx
+package PKG_Game_01;
+
+public class Character_01 {
+
+	protected String cName;
+	
+	public Character_01(String cName) {
+		
+		this.cName = cName;	
+	}
+	
+	// 행위
+	
+	public void run() {
+		
+		System.out.println(cName + ": 달리는 중입니다");
+	}
+	
+	public void stop() {
+		
+		System.out.println(cName + ": 해당 캐릭터가 정지했습니다");
+	}
+	
+	public void fly() {
+		
+		System.out.println(cName + ": 해당 캐릭터가 공중부양 중입니다");
+	}
+	
+	// -------
+	
+	
+	
+}
+```
+
+```jsx
+package PKG_Game_01;
+
+public class Fighter_01 extends Character_01 {
+	
+	//무기 설정
+	private String fName;
+	
+	//무기 없는경우
+	public Fighter_01(String cName) {
+		super(cName);
+		
+	}
+	
+	//무기를 주웠을 경우
+	public Fighter_01(String cName, String fName) {
+			super(cName);
+			this.fName = fName;
+	}
+	
+	//----------------------------------------------
+	// 이름 수정
+	public void setfName(String fName) {
+		this.fName = fName;
+		
+	}
+	// 들고있는 무기확인
+	public String getFName() {
+		return this.fName;
+		
+	}
+	//----------------------------------------------
+	
+	//출력
+	public void fight() {
+		
+		System.out.println(cName+ ": " + this.fName + "를 습득했습니다");
+	}
+}
+```
+
+```jsx
+package PKG_Game_01;
+
+public class Wizard_01 extends Character_01{
+
+	private String wName; // 마법이름
+	
+	public Wizard_01(String cName, String wName) {
+		
+		super(cName);
+		this.wName = wName;
+	}
+	
+	//-------------들고있는 무기가 무엇인가
+	
+	public String getFName() { 
+		return this.wName;
+	}
+	
+	//-----------------
+	
+	// 만약에 기본설정값과 다르게 이 캐릭터가 빨리 달려야 한다면
+	
+	@Override
+	public void run() {
+		
+		System.out.println( cName + ": 빠르게 달리는 중입니다");
+	}
+	
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1427ba21-4272-492c-855b-1777f9f9d327/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1427ba21-4272-492c-855b-1777f9f9d327/Untitled.png)
+
+---
+
+7,8 교시
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/91964a24-d81e-4d96-9de6-4efeeb74ace9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/91964a24-d81e-4d96-9de6-4efeeb74ace9/Untitled.png)
+
+```jsx
+package PKG_Sales;
+
+//추상클래스 - 절대로 절대로 인스턴스화 할 수 없다. (추상화 된 클래스와 추상클래스 다름)
+//추상클래스 추상멤버를 가질 수 있다.
+public abstract class Product {  // 상속하기위한 추상화를 위한 코드
+	
+	private String bName;
+	private int bPrice;
+	
+	public Product(String bName, int bPrice) {
+		
+		this.bName = bName;
+		this.bPrice = bPrice;
+	}
+
+	public String getName() {  // 고치진 못하지만 받아쓸 수 있다.
+		
+		return this.bName;
+		
+	}
+	
+	/*
+	// 이렇게 못쓴다는게 아니고 쓸수는 있는데 ->추상클래스인데 여기 행위가 주어지는게 x..
+	public double setRealPrice(double offPrice) {
+		double realPrice = (double)this.bPrice * (1-offPrice);
+		
+		return realPrice;
+	}
+	*/
+	
+	//private- protected 위에 바꾸지말고
+	protected int getPrice() {
+		
+		return this.bPrice;
+	}
+// 추상멤버 - 메서드 - 내용이 없는 메서드 -- 그냥 행위만 있어요  - 진정한 추상화 
+// 상속을 받는 클래스에서 반드시 반드시 반드시 재정의(override)해야만 한다. 
+	public abstract double setRealPrice(double offRate); //offPrice
+	
+}
+```
+
+```jsx
+package PKG_Sales;
+
+public class Computer extends Product {
+
+	private String cpuName;
+	
+	//클래스와 이름이 똑같고 이 클래스가 인스턴스화 되어질때 딱 한번만 실행되는 메서드
+	public Computer(String bName, int bPrice, String cpuName) {
+		
+		super(bName, bPrice);
+		this.cpuName = cpuName;		
+	}
+	
+	@Override
+	public double setRealPrice(double offRate) {
+		
+		int price = super.getPrice();  //super.getPrice() 값이 원래 price 다 
+		
+		double realPrice = price * (1 - offRate);
+		
+		return realPrice;
+		
+	}
+	
+}
+```
+
+```jsx
+package PKG_Sales;
+
+public class SaleExample {
+
+	public static void main(String[] args) {
+		
+		//abstract 썼으면
+		//Product p = new Product("asdf",50000); 인스턴스화 불가능
+		
+		Computer C = new Computer("컴퓨터", 517, "OLD CPU");
+		
+		double realPrice = C.setRealPrice(0.125);
+		
+		System.out.println(C.getName() + " : " + realPrice);
+		
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/62106a7f-ef5e-446c-949c-8f6b1e066d12/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/62106a7f-ef5e-446c-949c-8f6b1e066d12/Untitled.png)
