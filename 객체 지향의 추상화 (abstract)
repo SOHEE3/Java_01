@@ -1,0 +1,796 @@
+객체지향의 추상화 (abstract)
+	
+자동차 - 제네시스, 소나타, 스포츠카, 트럭, jeep, 수륙양용차, 비행기 차 
+자동차하면 가지는 --- 공통적인 사항들을 --- 먼저 정의한다 > 객체지향의 추상화라고 한다 --> 상속에서 나중에 쓰임
+객체 지향의 쿼리 재 사용 : 이 클래스를 카트에서만 쓸거라고 생각x 나중에 전투 게임을 만든다면 또 이것을 가져다가 쓴다
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e48a372-dca2-4f83-9e3d-6cbf3ec77baf/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e48a372-dca2-4f83-9e3d-6cbf3ec77baf/Untitled.png)
+
+```jsx
+package PKG_Car;
+
+public class Car {
+	
+	//1. 속성
+	private String carName;
+	private int maxSpeed;
+	private String carColor;
+	private int nowSpeed;
+	
+	// 생성자
+	
+	public Car() {
+		
+	}
+	
+	public Car(String carName, int maxSpeed) {
+		
+		this.carName = carName;
+		this.maxSpeed = maxSpeed;
+		
+		}
+	
+	public Car(String carName, int maxSpeed, String carColor) {
+		
+
+		this.carName = carName;
+		this.maxSpeed = maxSpeed;
+		this.carColor = carColor;
+		
+	}
+	
+	public void chgColor(String carColor) {
+		
+		this.carColor = carColor;
+		
+	}
+
+	//2. 행위들
+	public void carRun() {
+		
+		nowSpeed = nowSpeed + 10;
+			
+			// # 없으면 110이 넘어버림
+			if(nowSpeed > maxSpeed) {
+				System.out.println("경고 : 그만 밟으시오");
+				nowSpeed = maxSpeed;
+			}
+		
+		System.out.println("-----------------------");
+		System.out.println("이 차의 최고속도" + maxSpeed);
+		System.out.println("현재 이차의 속도는" + nowSpeed);
+		System.out.println("-----------------------");
+		
+		
+		//System.out.println( carName + "이고 색깔 " + carColor + "이 달린다~" );
+		
+	}	
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Game {
+
+	public static void main(String[] args) {
+				
+		Car car1 = new Car("파라곤", 100, "노랑");
+		
+		// 자동차를 달리게 하고 싶어
+			car1.carRun();
+			
+			car1.carRun();
+			
+			car1.carRun();
+			
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun(); // 10
+			car1.carRun(); // 11
+	
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0d1e2ad7-d8ee-4103-9193-b756dd89ffd4/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0d1e2ad7-d8ee-4103-9193-b756dd89ffd4/Untitled.png)
+
+#
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5158ba6a-9f19-424a-b01a-a7e42a73bdcd/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5158ba6a-9f19-424a-b01a-a7e42a73bdcd/Untitled.png)
+
+---
+
+```jsx
+package PKG_Car;
+
+public class Car {
+
+	
+	//1. 속성
+	private String carName;
+	private int maxSpeed;
+	private String carColor;
+	private int nowSpeed;
+	
+	// 생성자
+	
+	public Car() {
+		
+	}
+	
+	public Car(String carName, int maxSpeed) {
+		
+		this.carName = carName;
+		this.maxSpeed = maxSpeed;
+		
+		}
+				/* # 이렇게 쓰면 맘대로 고침
+				public void chgMaxSpeed(int maxSpeed) {  // 2 고칠 수 는 있지만 그 값을 확인할수없다
+					this.maxSpeed = maxSpeed;
+				}
+				*/
+				
+				public int getMaxSpeed() { // 1 고칠수는 없지만 그 값을 확인할수있고 
+			
+					return this.maxSpeed;
+					
+				}
+	
+	public Car(String carName, int maxSpeed, String carColor) {
+		
+
+		this.carName = carName;
+		this.maxSpeed = maxSpeed;
+		this.carColor = carColor;
+		
+	}
+	
+	public void chgColor(String carColor) {
+		
+		this.carColor = carColor;
+		
+	}
+	//2. 행위들
+	public void carRun() {
+		
+		nowSpeed = nowSpeed + 10;
+			
+			//없으면 110이 넘어버림
+			if(nowSpeed > maxSpeed) {
+				System.out.println("경고 : 그만 밟으시오");
+				nowSpeed = maxSpeed;
+			}
+		
+		System.out.println("-----------------------");
+		System.out.println("이 차의 최고속도" + maxSpeed);
+		System.out.println("현재 이차의 속도는" + nowSpeed);
+		System.out.println("-----------------------");
+		
+		
+		//System.out.println( carName + "이고 색깔 " + carColor + "이 달린다~" );
+		
+	}	
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Game {
+
+	public static void main(String[] args) {
+				
+		Car car1 = new Car("파라곤", 100, "노랑");
+		
+		// 자동차를 달리게 하고 싶어
+			car1.carRun();
+			
+			car1.carRun();
+			
+			car1.carRun();
+			
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun();
+			car1.carRun(); // 10
+			car1.carRun(); // 11
+	
+				// # car1.maxSpeed = 150;
+		
+		
+			/*
+		// 상점에서 자동차 색깔을 파랑으로 바꿨어요
+			car1.chgColor("파랑");
+			
+			car1.carRun();
+			*/
+			
+			/* #
+		// car 이름을 바꾸고 싶어
+		
+		Car car2 = new Car("도미노", 300);
+			
+				car2.chgMaxSpeed(300); # 이렇게 하면 맘대로 고칠수있다.
+				car2.chgMaxSpeed(200);
+				car2.chgMaxSpeed(100);
+				car2.chgMaxSpeed(3000);
+			*/
+	
+		int nowMaxSpeed = car1.getMaxSpeed();
+		System.out.println(" ^^ 현재 이 차의 최고속도는" + nowMaxSpeed + "입니다");
+		
+		Car car3 = new Car("김뚱땅", 200, "보라");
+		
+	}
+
+}
+```
+
+#이렇게 설정하면 마음대로 그 값( 여기서는 최고 속력 )을 고쳐버리기 때문에
+
+ 2 로 설정하면 그 값을 고칠 수 는 있지만 그 값을 확인 할 수 없다
+
+1 을 설정하면  그 값을 고칠 수 는 없지만 그 값을 확인 할 수 있다 - 이게 최종적으로 원하는 식
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0729e077-0597-4c4b-b9e9-ba3600099e35/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0729e077-0597-4c4b-b9e9-ba3600099e35/Untitled.png)
+
+```jsx
+
+	/* # 이렇게 쓰면 맘대로 고침
+				public void chgMaxSpeed(int maxSpeed) {  // 2 고칠 수 는 있지만 그 값을 확인할수없다
+					this.maxSpeed = maxSpeed;
+				}
+				*/
+	
+-- Car-----------------------------------			
+				public int getMaxSpeed() { // 1 고칠수는 없지만 그 값을 확인할수있고 
+			
+					return this.maxSpeed;
+					
+				}
+-- Game-----------------------------------		
+		int nowMaxSpeed = car1.getMaxSpeed();
+		System.out.println(" ^^ 현재 이 차의 최고속도는" + nowMaxSpeed + "입니다");
+
+return 을 써주는 이유는 Game 에서 Car에 쓰인 maxSpeed;(만약 300) 받아온 값을 쓰고싶은데 
+private int maxSpeed;가 걸려있기때문에
+우회해서 public int getMaxSpeed()를 설정하고 그값을 return으로 받아와서 
+Game에가서 getMaxSpeed() 에 담긴 maxSpeed-300 값을 사용하는 것. 
+```
+
+---
+
+---
+
+나혼자
+
+---
+
+---
+
+```jsx
+package PKG_Car_01;
+
+public class Car_01 {
+
+	// 속성
+	private String carName;
+	private String carColor;
+	private int maxSpeed;
+	private int nowSpeed;
+		
+	// 생성자
+
+	public Car_01 ( String carName, String carColor , int maxSpeed ) {
+		
+		this.carName = carName;
+		this.carColor = carColor;
+		this.maxSpeed = maxSpeed;
+		
+	}
+	
+	public Car_01 ( String carName, int maxSpeed ) {
+		
+		this.carName = carName;
+		this.maxSpeed = maxSpeed;
+		
+	}
+	
+	//------------------------------------
+	
+	public int maxcatSpeed() {
+		
+		return this.maxSpeed;
+	}
+	
+	//--------------------------------------
+	
+	public String selcatName() {
+		
+		return this.carName;
+	}
+	
+	// 행위
+	
+	public void catRun () { // catColor()
+		
+		nowSpeed = nowSpeed + 10;
+		
+		if(nowSpeed > maxSpeed) {
+			
+			System.out.println(" 경고합니다 : 그만 달리시오 ");
+			nowSpeed = maxSpeed;
+			
+		}
+		
+		System.out.println("-----------------------");
+		System.out.println(carName + " 의 최고 달리기 속도는 " + maxSpeed);
+		System.out.println(carName + " 현재 달리기 속도는 " + nowSpeed);
+		System.out.println("-----------------------");
+		
+		//System.out.println(carName + "의 색상은 " + carColor + " 빛이고 달리기 속도는 " + catSpeed + " 이다.");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Car_01;
+
+public class Game_01 {
+
+	public static void main(String[] args) {
+		/*
+		Car_01 cat1 = new Car_01("김뚱땅","노랑" , 80);
+			
+			cat1.catColor();
+			
+		Car_01 cat2 = new Car_01("김삼색","검정,노랑,하양 세가지", 60);
+			
+			cat2.catColor();
+		*/
+		
+		Car_01 cat1 = new Car_01("김뚱땅", 50);
+			cat1.catRun();
+			cat1.catRun();
+			cat1.catRun();
+			cat1.catRun();
+			cat1.catRun(); //5
+			cat1.catRun();
+			cat1.catRun();
+		
+		
+		Car_01 cat2 = new Car_01("김연님", 30);
+			cat2.catRun();
+			cat2.catRun();
+			cat2.catRun(); //3
+			cat2.catRun();
+			cat2.catRun();
+			
+		
+			//--------------------
+			
+			int nowcatSpeed = cat1.maxcatSpeed();
+			String nowcatName = cat1.selcatName();  // 리턴받아온 값을 여기 쓰겠다~ 
+			System.out.println( nowcatName + " 고양이의 max 속도는 " +  nowcatSpeed + " 입니다." );
+			
+			int nowcatSpeed2 = cat2.maxcatSpeed(); 
+			String nowcatName2 = cat2.selcatName();
+			System.out.println( nowcatName2 + " 고양이의 max 속도는 " +  nowcatSpeed2 + " 입니다." );
+		
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b4b4d49b-e048-44f3-864e-c1a44fc2bf47/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b4b4d49b-e048-44f3-864e-c1a44fc2bf47/Untitled.png)
+
+---
+
+---
+
+class Member
+
+```jsx
+package PKG_Sale;
+
+public class Member {
+
+		//1. 추상화 
+		// 필드(field) - 속성(property)
+		private String mID;
+		private String mName;
+		private String mGender;
+		
+		
+		public Member(String a, String b, String c) {
+			
+			this.mID = a;
+			this.mName = b;
+			this.mGender = c;
+			
+		}
+		
+		//2. 행위 //구매
+		public void purchase( Product prod, int qty ) {
+			
+			// 홍길동이 새우깡을 500원에 5개를 구매했습니다. 
+			System.out.println(this.mName + "이 "+ prod.getpName() + "을 " + prod.getPrice() + "에 구매했습니다.");
+		}
+
+}
+```
+
+class Product
+
+```jsx
+package PKG_Sale;
+
+public class Product {
+
+	//1. 추상화
+	private String pID;
+	private String pName;
+	private int price;
+	
+	//1-1) 생성자
+	public Product(String a, String b, int c) {
+		
+		this.pID = a;
+		this.pName = b;
+		this.price = c;
+		
+	}
+	
+	//2.행위 
+	
+	public String getpName() { // 바꿀수는 없지만 니가 필요하다면 이름은 쓸수있게 해줄게 
+		
+		return this.pName;
+	}
+	
+	public int getPrice() { 
+		
+		return this.price;
+	}
+	
+	public void setPrice(int chgPrice) { 
+		
+		this.price = chgPrice;
+	}
+	
+}
+```
+
+class MemberExample
+
+```jsx
+package PKG_Sale;
+
+public class MemberExample {
+
+	public static void main(String[] args) {
+		
+		
+		//1. 상품을 하나 만든다. 
+		Product prod1 = new Product("P001", "새우깡" , 500);
+		// 1-1) 상품 아이디 , 상품이름, 상품가격
+		
+		
+		//2. 상품을 하나 더 만든다.
+		Product prod2 = new Product("P002", "맛동산", 1000);
+		Product prod3 = new Product("P003", "샴푸", 10000);
+
+		//3. 홍길동 이라는 회원을 만든다.
+		Member mem1 = new Member("M001", "홍길동", "M");
+		
+		mem1.purchase(prod1, 5);
+		mem1.purchase(prod2, 10);
+		mem1.purchase(prod3, 10);
+		
+		prod2.setPrice(800);
+		mem1.purchase(prod2, 7);
+		
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e846efb1-0ace-4fb4-a0cf-8e36e797263b/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e846efb1-0ace-4fb4-a0cf-8e36e797263b/Untitled.png)
+
+---
+
+---
+
+class Member
+
+```jsx
+package PKG_Sale;
+
+public class Member {
+
+		//1. 추상화 
+		// 필드(field) - 속성(property)
+		private String mID;
+		private String mName;
+		private String mGender;
+		private int totalPrice;
+		
+		
+		public Member(String a, String b, String c) {
+			
+			this.mID = a;
+			this.mName = b;
+			this.mGender = c;
+			
+		}
+		
+		//2. 행위 2-1) 구매
+		public void purchase( Product prod, int qty ) {
+		
+			totalPrice += prod.getPrice()*qty;
+			// 홍길동이 새우깡을 500원에 5개를 구매했습니다. 
+			System.out.println(this.mName + "이 "+ prod.getpName() + "을 " + prod.getPrice() + "에 구매했습니다.");
+		}
+	
+		// 2-2) 목록과 총 구매가격 / 구매리스트
+		
+		public void totalList( ) {
+			
+			System.out.println(this.mName + "의  총 구매가격은 : " + totalPrice );
+
+		}
+		
+}
+```
+
+> 
+
+- 내가 처음에 하려던 식이 500원만 나온 이유
+
+    //int total = prod.getPrice();
+    																						//prod.price * prod.qty ...?
+    																						//totalPrice += total;
+
+안쪽에 쓰면 한번만 실행된다
+
+class Product
+
+```jsx
+package PKG_Sale;
+
+public class Product {
+
+	//1. 추상화
+	private String pID;
+	private String pName;
+	private int price;
+	
+	//1-1) 생성자
+	public Product(String a, String b, int c) {
+		
+		this.pID = a;
+		this.pName = b;
+		this.price = c;
+		
+	}
+	
+	//2.행위 
+	
+	public String getpName() { // 바꿀수는 없지만 니가 필요하다면 이름은 쓸수있게 해줄게 
+		
+		return this.pName;
+	}
+	
+	public int getPrice() { 
+		
+		return this.price;
+	}
+	
+	// 가격 변경해주는 행위
+	public void setPrice(int chgPrice) { 
+		
+		this.price = chgPrice;
+	}
+	
+}
+```
+
+class MemberExample  / main
+
+```jsx
+package PKG_Sale;
+
+public class MemberExample {
+
+	public static void main(String[] args) {
+		
+		
+		//1. 상품을 하나 만든다. 
+		Product prod1 = new Product("P001", "새우깡" , 500);
+		// 1-1) 상품 아이디 , 상품이름, 상품가격
+		
+		
+		//2. 상품을 하나 더 만든다.
+		Product prod2 = new Product("P002", "맛동산", 1000);
+		Product prod3 = new Product("P003", "샴푸", 10000);
+
+		//3. 홍길동 이라는 회원을 만든다.
+		Member mem1 = new Member("M001", "홍길동", "M");
+		
+		mem1.purchase(prod1, 5);
+		mem1.purchase(prod2, 10);
+		mem1.purchase(prod3, 10);
+		
+		prod2.setPrice(800);
+		mem1.purchase(prod2, 7);
+		
+		// 구매리스트 총 매출
+		mem1.totalList();
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c827ef27-4e83-4d10-af50-68bb9b5430d0/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c827ef27-4e83-4d10-af50-68bb9b5430d0/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0691d146-271b-45c0-bfeb-6f627558d884/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0691d146-271b-45c0-bfeb-6f627558d884/Untitled.png)
+
+---
+
+---
+
+나혼자
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/01547f9c-25e4-4667-b977-cba47c0a0db4/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/01547f9c-25e4-4667-b977-cba47c0a0db4/Untitled.png)
+
+```jsx
+package PKG_Sale_01;
+
+public class Member_01 {
+
+	//1. 추상화 부터
+	
+	private String catID;
+	private String catName;
+	private String catGender;
+	private int totalPrice;
+	
+	//2
+	
+	public Member_01 ( String a, String b, String c ) {
+		
+		this.catID = a;
+		this.catName = b;
+		this.catGender = c;
+		
+	}
+	
+	// 행위
+	
+	// 1번) 구매하는 행위  -- 상품을 가져와야하는데 product 에 private 으로 걸려있는 것들을 가져와야함 
+	
+	public void buyCatProduct ( Product_01 Cprod , int qty ) {
+		
+		totalPrice += Cprod.getcPrice()*qty;
+		
+		System.out.println( catName + "고객이 " + Cprod.getcpName() + " 상품을 " + Cprod.getcPrice() + "원의 가격에 구매완료 하였습니다^0^" );
+		
+	}
+	
+	
+	// 2번) 구매 리스트와 구매 총가격 뽑기 -- 누적 금액을 구해야한다.
+	
+	public void totalList() {
+		
+		System.out.println( catName + "고객님의 $ 총 구매 가격: " + totalPrice + "원 입니다");
+		
+	}
+	
+}
+```
+
+```jsx
+package PKG_Sale_01;
+
+public class Product_01 {
+	
+	private String cpID;
+	private String cpName;
+	private int cPrice;
+	
+	public Product_01( String a, String b, int c ) {
+		
+		this.cpID = a;
+		this.cpName = b;
+		this.cPrice = c;
+		
+	}
+
+	// 상품과 가격들을 다른곳에서 사용할 수 있게 해준다.
+	
+	public String getcpID() {
+		
+		return this.cpID;
+	}
+	public String getcpName() {
+			
+			return this.cpName;
+		}
+	public int getcPrice() {
+		
+		return this.cPrice;
+	}
+	
+	// 행위 / 상품의 가격 변동
+	
+	public void setcPrice(int chgcPrice) {
+		
+		this.cPrice = chgcPrice;
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Sale_01;
+
+public class MemberExample_01 {
+
+	public static void main(String[] args) {
+		
+		//판매 상품
+		
+		Product_01 catProd1 = new Product_01("P001", "챠오츄르 연어맛", 2300);
+		
+		
+		Product_01 catProd2 = new Product_01("P002", "챠오츄르 닭고기맛", 2000);
+		
+		
+		Product_01 catProd3 = new Product_01("P003", "캣닢", 11000);
+		
+
+		// 회원
+		
+		Member_01 catMem1 = new Member_01("M001", "김뚱땅", "M");
+		
+		Member_01 catMem2 = new Member_01("M002", "김연님", "F");
+		
+		
+		// 실행
+		
+		catMem1.buyCatProduct(catProd2, 5);
+		
+		catMem2.buyCatProduct(catProd1, 10);
+		catMem2.buyCatProduct(catProd3, 7);
+		
+		catMem1.buyCatProduct(catProd1, 30);
+		
+		catMem2.buyCatProduct(catProd2, 2);
+		
+		catProd3.setcPrice(20000); // 캣닢 상품 가격의 변동
+		
+		catMem2.buyCatProduct(catProd3, 10);
+		
+		// 총금액 실행
+		catMem1.totalList();
+		catMem2.totalList();
+
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6fb1e213-e84f-428d-b0ca-b6f20987cd3f/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6fb1e213-e84f-428d-b0ca-b6f20987cd3f/Untitled.png)
