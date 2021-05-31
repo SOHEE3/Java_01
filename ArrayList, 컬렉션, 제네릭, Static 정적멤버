@@ -1,0 +1,508 @@
+```jsx
+package PKG_Car;
+
+public class CarExam {
+
+	public static void main(String[] args) {
+		
+		//Car car = new Car 불가능 추상클래스는 인스턴스화 불가능 
+		
+		//묵시적형변환 , up casting
+		Car car = new Sedan();  // up casting
+		car.carRun();
+		car.carStop(); 
+ // "Sedan 세단이 멈춘다."(재정의) / "Car 자동차가 정지한다."(원래) 둘중 뭐가 실행되는가
+```
+
+```jsx
+package PKG_Car;
+
+public abstract class Car {
+
+	public abstract void carRun();
+	
+	public void carStop() {
+		System.out.println("Car 자동차가 정지한다.");
+		
+	}
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Sedan extends Car {
+	
+	@Override
+	public void carRun() {
+		
+		System.out.println("Sedan 세단이 달린다.");
+	}
+	
+//	@Override
+//	public void carStop() {
+//		System.out.println("Sedan 세단이 멈춘다.");
+//		
+//	}
+	
+	public void compotable() {	
+		
+		System.out.println("세단만의 장점 편안한다.");
+	}
+	
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8981e5de-329d-4cae-814b-81fe82a3ac59/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8981e5de-329d-4cae-814b-81fe82a3ac59/Untitled.png)
+
+주석처리하면
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9008bd39-1465-4ff6-8387-430815806a61/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9008bd39-1465-4ff6-8387-430815806a61/Untitled.png)
+
+주석풀면
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/da4a77e1-91d4-42e1-9e56-a4b7c9b35741/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/da4a77e1-91d4-42e1-9e56-a4b7c9b35741/Untitled.png)
+
+---
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/21171d2e-5032-4222-9751-0b0febd0d081/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/21171d2e-5032-4222-9751-0b0febd0d081/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8ea1a168-10f1-470b-9baa-651d75ac1fde/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8ea1a168-10f1-470b-9baa-651d75ac1fde/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8da9393e-2f23-4c8a-a9d0-d92f1e811887/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8da9393e-2f23-4c8a-a9d0-d92f1e811887/Untitled.png)
+
+```jsx
+package PKG_Car;
+
+public class Member {
+	
+	private Car car;
+	
+	public void rideCar(Car car) { //래퍼런스 참조 Car car안에 여러종류 자동차가 올수있음
+		this.car = car;
+	}
+	
+	public void carRun() {  // 멤버가 가지는 carRun
+		this.car.carRun();
+	}
+	
+	public void carFly() {
+			// this.car - sedan - else 실행 
+			// this.car - flycar - if 실행 - 되지만 Car type을 상속받고있어서 Flycar type으로 down casting		
+		// 너 날 수 있니
+		if(this.car instanceof FlyCar) {
+			// 날아간다
+			((FlyCar) this.car).carFly();
+		}
+		
+		else if(this.car instanceof MultiCar) {
+			//else if multicar가 못난다고 떠서 다시만든거 -> 이렇게하면 다른거 추가되면 또 만들어야함
+			((MultiCar) this.car).multiCarFly();
+		}
+		
+		else {
+			// 그 차는 못날아
+			System.out.println("그 차는 날지 못합니다.");
+		}
+		
+	}
+	
+}
+```
+
+---
+
+---
+
+● ArrayList 클래스
+기존 배열은 길이를 정하여 선언하므로 사용 중 부족한 경우 다른 배열로 복사하는 코드를 직접 구현해야함
+중간의 요소가 삭제되거나 삽입되는 경우도 나머지 요소에 대한 조정하는 코드를 구현 해야함
+arraylist 클래스는 자바에서 제공되는 객체 배열이 구현된 클래스 여러 메서드와 속성등 사용하여
+객체 배열을 편리하게 관리 할 수 있음
+
+● ArrayList 클래스 주요 메서드
+요소를 추가하거나 제거 할 때 각 내부에서 코드가 모두 구현되어 있으므로 배열을 직접 선언하여
+사용하는 것보다 편리함
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/25deae03-70e2-4e50-8445-c7feddada1aa/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/25deae03-70e2-4e50-8445-c7feddada1aa/Untitled.png)
+
+● ArrayList 클래스 사용하기
+ArrayList<E> 배열 이름 = new ArrayList<E>();
+사용할 객체를 E위치에 넣고 ArryList 메서드를 활용하여 추가하거나 참조할 수 있음
+
+---
+
+컬렉션
+
+```jsx
+package PKG_Car;
+
+import java.util.ArrayList;
+
+public class CarExam {
+
+	public static void main(String[] args) {
+
+		Sedan sedan = new Sedan();
+		FlyCar flycar = new FlyCar();
+		MultiCar multicar = new MultiCar();
+		
+		//같은 메소드임에도 불구하고 두개가 다르게 
+		Member mem = new Member();
+		mem.rideCar(sedan);		
+		mem.carRun();
+		mem.carFly();
+		
+		mem.rideCar(flycar);
+		mem.carFly();
+		
+		mem.rideCar(multicar);
+		mem.carRun();
+		mem.carFly();
+
+	/*	
+		Car[] cars = new Car[4];
+		cars[0] = new Sedan();
+		cars[1] = new FlyCar();
+		cars[2] = new MultiCar();
+		cars[3] = new Sedan();
+	*/	
+
+//--------------------------------------------------		
+		// 갯수 제한 없음 이게 컬렉션
+		ArrayList cars = new ArrayList();
+		cars.add(sedan);
+		cars.add(sedan);
+		cars.add(flycar);
+		cars.add(multicar);
+		
+		//Object e = new Sedan();
+	
+		Park park = new Park();
+		park.carPark(sedan);
+		park.carPark(multicar);
+		
+		park.getCarList();
+		
+		//암거나 들어가도됨
+		ArrayList arr = new ArrayList();
+		arr.add(5); 
+		arr.add("asdf");
+
+		//값 수정
+		arr.add(1,"강강강");  // 내가 012에 넣고 바꿨다 1 번째 값을?
+		System.out.println(arr.get(1));
+		
+		boolean b = arr.add(1.234213); 
+		System.out.println(b);
+		
+		/*	
+		double d = (double)arr.get(2); // Object를->(double타입으로) down casting 해준것
+		System.out.println(d);
+		
+		String str = (String)arr.get(1); // (String) down casting 위와 마찬가지
+	*/	
+
+		//-----------------
+		//제네릭 타입
+		
+	//	<>괄호안의 타입으로 제한시키겠다 / ArrayList<T> strArr = new ArrayList<T>();
+		ArrayList<String> strArr = new ArrayList<String>();
+		//strArr.add(null);
+		
+		
+	}	
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a584f1ed-5eb2-4164-849f-0152c13bd07f/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a584f1ed-5eb2-4164-849f-0152c13bd07f/Untitled.png)
+
+1번째 배열의 asdf 가 강강강으로 수정되어서 출력된다 
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7032c668-b5f3-4506-8544-9a93427403bd/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7032c668-b5f3-4506-8544-9a93427403bd/Untitled.png)
+
+arr.add("강강강") 은 그냥 3번째 순서의 배열로 만들어진게됨 고로 2번째순서의 asdf는 수정되지 않고 그대로 출력이 된다.
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f8fbbbaa-562a-469f-9774-d8376a6bbc32/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f8fbbbaa-562a-469f-9774-d8376a6bbc32/Untitled.png)
+
+---
+
+---
+
+---
+
+```jsx
+package PKG_Car;
+
+import java.util.ArrayList;
+
+public class Park {
+	
+	private ArrayList<Car> parkCars;  //<Car> 타입만 올 수 있다
+	private ArrayList<Fly> flyCars;
+	
+	public Park() {
+		this.parkCars = new ArrayList<Car>();
+		this.flyCars = new ArrayList<Fly>();
+	}
+	
+	public void carPark(Car car) {
+		if(car instanceof Fly) {
+			flyCars.add((Fly)car);
+		}
+		
+		parkCars.add(car);
+	}
+	
+	public void getCarList() {
+		
+		for(int i=0; i<parkCars.size(); i++) {  //parkCars.size() 내가 ArrayList에 포함시킨 갯수
+			System.out.println( ((Car)parkCars.get(i)).toString() );
+			//get(i) 메소드이다 
+		}
+		
+	}
+	
+	public void getFlyCarList() {
+		
+		for(int i=0; i<flyCars.size(); i++) {  
+			System.out.println( ((Fly)parkCars.get(i)).toString() );  
+//  그 주소값을 String 타입으로 출력하겠다.
+		 
+		}
+		
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ca979a6e-8e31-4a8f-a653-5c62b876511a/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ca979a6e-8e31-4a8f-a653-5c62b876511a/Untitled.png)
+
+---
+
+---
+
+---
+
+---
+
+ArrayList 클래스는
+
+java.util 패키지로 제공된다.
+
+동적 길이 배열
+
+ArrayList
+
+import java.util.ArrayList;
+ArrayList<String> cars = new ArrayList<String>();
+
+- > 문자열을 저장하는 cars **ArrayList** 객체 생성
+
+관련 메서드
+
+**add()**메서드를 사용하여 요소를 추가한다.
+
+arr.add(1,"dsfa"); : 원래는 추가되는 기능이지만 그 자리에 값이 만들어져 있을경우 수정된다
+
+arr.set(2."dsaf"); 원래 수정하는 식
+
+![https://postfiles.pstatic.net/MjAyMTA1MDFfMjAx/MDAxNjE5ODU2ODMzOTM1.D9P-etj7H_qdip8v-BB6AV38H9lPt4T_szQ1r4imHrMg.HQ78LiB1A0ixoDoj-PwAE1g1tOEeE0_a6YWYKjiwu4Qg.PNG.entekk1111/image.png?type=w773](https://postfiles.pstatic.net/MjAyMTA1MDFfMjAx/MDAxNjE5ODU2ODMzOTM1.D9P-etj7H_qdip8v-BB6AV38H9lPt4T_szQ1r4imHrMg.HQ78LiB1A0ixoDoj-PwAE1g1tOEeE0_a6YWYKjiwu4Qg.PNG.entekk1111/image.png?type=w773)
+
+**인덱스 번호로 접근**하여 값을 가져올 수 있다.
+
+![https://postfiles.pstatic.net/MjAyMTA1MDFfMjUg/MDAxNjE5ODU2OTQyNjk2.bmhGTpqIXh4NxpkJ6CCRMBMW61ZdQrVz_75KEv9uvosg.YyHe6fUTk1VdsXD55dyLdB0hAD03HDmcWiVcyDDXKSQg.PNG.entekk1111/image.png?type=w773](https://postfiles.pstatic.net/MjAyMTA1MDFfMjUg/MDAxNjE5ODU2OTQyNjk2.bmhGTpqIXh4NxpkJ6CCRMBMW61ZdQrVz_75KEv9uvosg.YyHe6fUTk1VdsXD55dyLdB0hAD03HDmcWiVcyDDXKSQg.PNG.entekk1111/image.png?type=w773)
+
+**remove()**메서드를 사용해서 요소를 제거할 수 있다.
+
+- 모든 요소 제거시엔 **clear()**
+
+![https://postfiles.pstatic.net/MjAyMTA1MDFfMjc3/MDAxNjE5ODU3MDEzMzYz.dvWL28UQ0efG3IwCwJ8pHLUjKUAfk5C8OB8v7dXCCdIg.jm-82wX7VXjGHyBhrnWU5I2-pK6vkRgpi1eho7hpSd0g.PNG.entekk1111/image.png?type=w773](https://postfiles.pstatic.net/MjAyMTA1MDFfMjc3/MDAxNjE5ODU3MDEzMzYz.dvWL28UQ0efG3IwCwJ8pHLUjKUAfk5C8OB8v7dXCCdIg.jm-82wX7VXjGHyBhrnWU5I2-pK6vkRgpi1eho7hpSd0g.PNG.entekk1111/image.png?type=w773)
+
+**size()**메서드로 갯수를 확인 할 수 있다.
+
+![https://postfiles.pstatic.net/MjAyMTA1MDFfODMg/MDAxNjE5ODU3MzQ4MzY4.WbNY63IS2ueuBO3rWN2iWk17hpuLy-hKBfaXoYWRY6Ig.QQtBAcjDEE3Dj6oh0ASwyfR0kC12iC1Y9EfNfU4QTIgg.PNG.entekk1111/image.png?type=w773](https://postfiles.pstatic.net/MjAyMTA1MDFfODMg/MDAxNjE5ODU3MzQ4MzY4.WbNY63IS2ueuBO3rWN2iWk17hpuLy-hKBfaXoYWRY6Ig.QQtBAcjDEE3Dj6oh0ASwyfR0kC12iC1Y9EfNfU4QTIgg.PNG.entekk1111/image.png?type=w773)
+
+for 반복문 사용
+
+![https://postfiles.pstatic.net/MjAyMTA1MDFfMjg2/MDAxNjE5ODU3NDA3NTQ1.RPDggkxv0KBsnvRKie9SYBwoVX383HML6ibxMiBfDsMg.f9vDV94zMY7jO1r2B-hJ58rXsfYcy7E8nwPH4bcHricg.PNG.entekk1111/image.png?type=w773](https://postfiles.pstatic.net/MjAyMTA1MDFfMjg2/MDAxNjE5ODU3NDA3NTQ1.RPDggkxv0KBsnvRKie9SYBwoVX383HML6ibxMiBfDsMg.f9vDV94zMY7jO1r2B-hJ58rXsfYcy7E8nwPH4bcHricg.PNG.entekk1111/image.png?type=w773)
+
+이렇게도 쓸 수 있군
+
+오 신기..
+
+![https://postfiles.pstatic.net/MjAyMTA1MDFfMTU2/MDAxNjE5ODU3NDg4NTY5.u5cAQG3Y_zQ7HyDy9Ec_m5g90M3F9MSWO8nXetG7QHwg.ZONyz016HhK2bZQp6K9XjA_vH8Qa6PAvoIyGrn8XJrMg.PNG.entekk1111/image.png?type=w773](https://postfiles.pstatic.net/MjAyMTA1MDFfMTU2/MDAxNjE5ODU3NDg4NTY5.u5cAQG3Y_zQ7HyDy9Ec_m5g90M3F9MSWO8nXetG7QHwg.ZONyz016HhK2bZQp6K9XjA_vH8Qa6PAvoIyGrn8XJrMg.PNG.entekk1111/image.png?type=w773)
+
+< > 안에 데이터 타입이 들어간다.
+
+---
+
+---
+
+---
+
+---
+
+주석 뺀건데 필요하면 읽어보기
+
+```jsx
+package PKG_Car;
+
+import java.util.ArrayList;
+
+public class CarExam {
+
+	public static void main(String[] args) {
+/*		
+		//Car car = new Car 불가능 추상클래스는 인스턴스화 불가능 
+		
+		//묵시적형변환 , up casting
+		Car car = new Sedan();  // up casting
+		car.carRun();
+		car.carStop();  // "Sedan 세단이 멈춘다."(재정의) / "Car 자동차가 정지한다."(원래) 둘중 뭐가 실행되는가
+		
+		
+		if(car instanceof Sedan) {  // car가 세단타입이면
+			((Sedan)car).compotable();  
+			//down Casting, 명시적 형변환(//암시적 형변환) / 명시적으로 적어주었다~ 
+		}
+		
+		if(car instanceof FlyCar) {
+			
+		}
+*/		
+//		
+//		Sedan sedan = new Sedan();  // 주소 참조 . 메모리가 만들어지는 것이 아니고 주소 
+//		sedan.carRun();
+//		sedan.carStop();
+//		sedan.compotable();
+//		
+//		Car flycar = new FlyCar();
+//		flycar.carRun();
+//		flycar.carStop();
+//		//flycar.carFly(); 불가능 
+//		
+//		FlyCar flycar2 = new FlyCar();
+//		flycar2.carFly(); 
+//		
+//		Member mem = new Member();
+//		mem.rideCar(sedan);
+//		mem.carRun();  // &플라이카가 날아다닌다. 
+//		// &같은메소드인데 다른결과 -> 다형성 
+//		
+//		
+//		mem.rideCar(flycar2);
+//		mem.carRun();  // &FlyCar 가 달린다.
+//		mem.carFly();
+		
+		
+		
+	}
+	
+	
+}
+```
+
+---
+
+---
+
+**Static**
+
+static  딱 한번 만들고 x
+메모리에 한번 올라오면
+정적멤버: 변하지 않는 멤버
+(약간 전역변수랑 비슷.. 하지만 전역변수 없다~)
+
+내가 객체를 만들때 프로그램 시작과 끝까지 자동차 변수 멤버들중에
+절대로 변하지 않는 값을 저장하고 싶을때 정적멤버를 사용한다.
+
+```jsx
+package PKG_Static;
+
+public class StaticExam {
+
+	public static void main(String[] args) {
+		/*
+		// 야 너 대체 자동차 몇대 만들었니
+		Car c = new Car();
+		Car c1 = new Car();
+		Car c2 = new Car();
+		Car c3 = new Car();
+		
+		Car.carCount +=5;
+		System.out.println(Car.carCount);
+		//-System.out.println(Car.strName);
+		
+	//	System.out.println(c.getCarCount());
+		System.out.println(c.getCarCount2());
+		System.out.println(c1.getCarCount2());
+		System.out.println(c2.getCarCount2());
+		System.out.println(c3.getCarCount2());
+		*/
+			
+		People p1 = new People("김수인",26);
+		p1.gender = "남자";
+		
+		System.out.println(p1.gender);
+		
+		People p2 = new People("김소희",29);
+		
+		System.out.println(p2.gender);
+
+		
+	}
+
+}
+```
+
+```jsx
+package PKG_Static;
+
+public class People {
+
+		public String pName = "";
+		
+		public int age = 0;
+		public String gender = "초기화입니다"; // static 여기 없애면 남자나옴 첫번째 실행될때 저장된채로 있어서?
+		
+		public People(String pName, int age) {
+			this.pName = pName;
+			this.age = age; 
+			//this.memberCount +=1;
+			
+		}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/65cffa8a-145c-48a7-8732-1c3900623bc5/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/65cffa8a-145c-48a7-8732-1c3900623bc5/Untitled.png)
+
+static 이 아니면 정적멤버가 아니니까 위쪽 변수에 계속 저장된 값을 가지고 있는것이 아니기 때문에 p2는 초기화된 값이 밑에서 실행되지만 
+
+```jsx
+package PKG_Static;
+
+public class People {
+
+		public String pName = "";
+		
+		public int age = 0;
+		public static String gender = "초기화입니다"; // static 여기 없애면 남자나옴 첫번째 실행될때 저장된채로 있어서?
+		
+		public People(String pName, int age) {
+			this.pName = pName;
+			this.age = age; 
+			//this.memberCount +=1;
+			
+		}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a5e212d-c271-4f5e-8cac-411a37f8f38d/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a5e212d-c271-4f5e-8cac-411a37f8f38d/Untitled.png)
+
+	public static String gender = "초기화입니다"; static 이란 정적멤버가 설정되었기때문에 메모리에 한번올라온 남자라는 값이 계속 저장되어 있는 것이다.
