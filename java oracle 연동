@@ -1,0 +1,133 @@
+```jsx
+package java_0601_test;
+
+import java.sql.*;
+
+public class DB_Exam_01 {
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException  {
+		
+		Class.forName("oracle.jdbc.OracleDriver"); //이거를?
+		
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "System", "soso6080");
+				
+		Statement stmt =  con.createStatement();  // 데이터베이스에Statement 전달
+		
+		String A = "SELECT *FROM STUDENTS";  // A 는 질의문만 가지고있고
+		
+		ResultSet rs = stmt.executeQuery(A); // (여기서 실행됨)
+		//ResultSet rs = stmt.executeQuery("SELECT *FROM STUDENTS");
+				
+		while(rs.next()) {  // rs.next() 끝날때까지 돌려라
+			System.out.print(rs.getString("SID"));
+			System.out.println(" : "+rs.getString("SNAME"));
+		}
+			
+	}
+
+}
+```
+
+```jsx
+package java_0601;
+
+import java.sql.*;
+
+import oracle.jdbc.OracleTypes;
+
+public class DB_Exam {
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+			
+		//ojdbc8.jar
+		//외부 jar, class파일을 가져와서 사용
+		
+		Connection con = null;
+		//java 에서 db를 연결할 수 있도록 하는 class
+		Statement stmt = null;
+	//	CallableStatement csmt = null;
+		//쿼리를 담는 객체 Inline
+		ResultSet rs = null;
+		//결과를 담는 객체
+				
+		String userID = "System";
+		String userPass = "soso6080";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		
+		//Connection con = null;
+		con = DriverManager.getConnection(url,userID,userPass);
+		
+	/*
+		//1. 연결객체를 만들었다
+		
+		//2. 쿼리를 날려서 결과를 가져오면 된다.
+		//2-1)inline query
+		//2-2) oracle package procedure, procedure
+		
+		
+		String inSID = "S001";
+		String strSql = "Select * from students where sid=' " + inSID + " ' ";
+
+		String strSql = "SELECT *FROM STUDENTS";
+		
+		stmt = con.createStatement();
+		
+		rs = stmt.executeQuery(strSql);  // rs에 내가 오라클에 넣은 데이터가 들어와 있다.
+		
+		while(rs.next()) {
+			System.out.print(rs.getString("SID"));
+			System.out.println(" : " + rs.getString("SNAME"));
+		}
+*/
+		
+		//PROC
+		/*
+		CallableStatement csmt = null;
+		//객체는 오라클의 프로시져를 호출하도록 하는 객체
+		String procName = "PROC_SEL_STUDENTSS(?,?)";
+		csmt = con.prepareCall(procName);
+		csmt.setString(1, "S001");
+		csmt.registerOutParameter(2, OracleTypes.CURSOR );
+		 */
+			
+		// Connection 을 사용해서 데이타베이스(오라클)에 proc를 담는 객체
+		CallableStatement csmt = null;
+		//객체는 오라클의 프로시져를 호출하도록 하는 객체
+		
+		String strProcName = "BEGIN PROC_SEL_STUDENTSS(?,?); END;";  // (?,?) ? 매개변수 갯수
+		
+		csmt = con.prepareCall(strProcName); // 프로시져 받을준비
+		csmt.setString(1,"S001"); //  setString in
+		//csmt.setInt(2,10);
+		csmt.registerOutParameter(2, OracleTypes.CURSOR); // registerOutParameter out
+		
+		csmt.execute(); // 실행문
+		
+		rs = (ResultSet)csmt.getObject(2);  //  프로시저는 이걸(getObject) 써야하는데..? object가 더 크니까 (ResultSet) 형변환 해준다
+		
+		while(rs.next()) {
+			System.out.print(rs.getString("SID"));
+			System.out.println(" : " + rs.getString("SNAME"));
+		}
+		
+	}	
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e9bd3f5-912d-4e23-b903-6d2b44330fb8/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7e9bd3f5-912d-4e23-b903-6d2b44330fb8/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0af2699c-3622-4cd9-bb85-0c434768db66/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0af2699c-3622-4cd9-bb85-0c434768db66/Untitled.png)
+
+[https://www.oracle.com/database/technologies/jdbc-ucp-122-downloads.html](https://www.oracle.com/database/technologies/jdbc-ucp-122-downloads.html)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2529d9ca-3356-4247-bed5-d58c7eb52913/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2529d9ca-3356-4247-bed5-d58c7eb52913/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/04403c23-94bf-4157-b9c8-36a6e9063dcd/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/04403c23-94bf-4157-b9c8-36a6e9063dcd/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6774c373-07ef-41cc-bcf0-eeb8ca37b4a8/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6774c373-07ef-41cc-bcf0-eeb8ca37b4a8/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9faf271a-f89d-4905-a710-be32cc75beb9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9faf271a-f89d-4905-a710-be32cc75beb9/Untitled.png)
