@@ -1,0 +1,493 @@
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/daaf7626-3450-44c0-bed2-b6bdab3a5b58/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/daaf7626-3450-44c0-bed2-b6bdab3a5b58/Untitled.png)
+
+```jsx
+package PKG_Car;
+
+public abstract class Air {
+
+	public abstract void airPlaneFly();
+	
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class AirCar extends Car implements Fly{
+	
+	public AirCar(String airCarName) {
+		super(airCarName);
+	}
+	
+	
+	@Override
+	public void carRun() {
+		
+		System.out.println("에어카가 달린다.");
+	}
+	
+	@Override
+	public void fly() {
+		System.out.println("에어카가 날아가요.");
+	}
+	
+	@Override
+	public void land() {
+		System.out.println("에어카 창륙");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public abstract class Car {
+
+	private String carName;
+	public Car(String carName) {
+		this.carName = carName;
+	}
+	
+	public abstract void  carRun();
+	
+	public void turnonRamp() {
+		System.out.println("램프를 킨다");
+	}
+	
+	public String getCarName() {
+		
+		return carName;
+	}
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Carpet implements Fly{ // 카펫은 자동차이다 is a / 
+
+	@Override
+	public void fly() {
+		System.out.println("카페트가 날아요");
+	}
+	
+	@Override
+	public void land() {
+		System.out.println("카펫 창륙");
+	}
+		
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class fighter extends Air{
+	
+	@Override
+	public void airPlaneFly() {
+		System.out.println("전투기가 날아다녀요");
+	}
+	
+	public void airPlaneShot() {
+		System.out.println("전투기가 총");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class FlyCar extends Car implements Fly {
+
+	private int flyMaxSpeed;
+	public FlyCar(String flyCarName, int flyMaxSpeed) {
+		super(flyCarName);
+		this.flyMaxSpeed = flyMaxSpeed;
+		
+	}
+	
+	@Override
+	public void carRun() {
+		String flyCarName = super.getCarName();
+		System.out.println(flyCarName + "플라이카가 달린다");
+	}
+	
+	@Override
+	public void fly() {
+		String flyCarName = super.getCarName();
+		System.out.println(flyCarName + "플라이카가 날아간다");
+	}
+	
+	@Override
+	public void land() {
+		System.out.println("창륙");
+	}
+	
+	
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Truck extends Car{
+
+	
+		private int tCaps;
+		
+		public Truck( String truckName,int tCaps ) {
+			super(truckName);
+			this.tCaps = tCaps;
+		}
+		
+		public int getCarpacity() {
+			return this.tCaps;
+					
+		}
+		
+		@Override
+		public void carRun() {
+			String truckName = super.getCarName();
+			System.out.println(truckName + "트럭이 달린다");
+		}
+		
+		public void truckLoad() {  
+			String truckName = super.getCarName();
+			System.out.println(truckName + "트럭이 짐을 싣는다");
+		}
+		
+		
+		
+}
+```
+
+```jsx
+package PKG_Car;
+
+//열거형
+public enum Gender {
+
+		//특정값을 제한하고자 할때
+		Male, Female, ETC
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public interface Fly {
+	public void fly(); // 날고
+	public void land(); // 창륙해
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Member {
+
+	private String memName;
+	private Gender memGender;
+	private Car car;  // // 다른 Car car / 이 페이지에서만 쓸수있는 전역변수
+	private Carpet carpet;
+	
+	public Member(String memName, Gender memGender) {
+		this.memName = memName;
+		this.memGender = memGender;
+		
+	}
+	
+	public void rideCar(Car car) { // up casting 을 이용해서 자동차를 받자
+
+//Car car 매개변수 카는 메인에서 쓸때 들어올 짝이 들어오는 자리인데
+	// flycar가 아니라 Car를 써준건  up casting 다른자동차도 들어올수있으니까
+		
+		//29 소녀가 이쁜트럭을 탔어요
+		this.car = car;
+		System.out.println(this.memGender + this.memName+ "가 " + car.getCarName() + "을 탔어요 ");
+		
+	}
+		
+	public void driveCar() {
+		this.car.carRun();
+	}
+	
+	
+	public void flyCar() {
+		//혹시 this.car가 FlyCar타입이면 carFly()을 실행시켜줘
+		
+		/* //	인터페이스 추가하면 이거 할 필요 x 
+		if(this.car instanceof FlyCar) {
+			((FlyCar)car).carFly();
+		}
+		
+		*/
+		
+		//혹시 this.car가 날아가고 착륙한다는 기능을 가진 인터페이스를 장착햇니?
+		if(this.car instanceof Fly) {
+			((Fly)this.car).fly();
+		}
+		
+		else { 
+			System.out.println("미안 너는 날지못해");
+		}
+		
+	}
+
+	public void hasObject(Carpet carpet) {
+		this.carpet = carpet;
+	}
+	
+	public void carpetFly() {
+		if(carpet instanceof Fly) {
+			((Fly)this.car).fly();
+		}
+		else {
+			System.out.println("미안 너는 날지못해");
+		}
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class CarExam {
+
+	public static void main(String[] args) {
+			
+		
+		Truck car1 = new Truck("이쁜트럭", 10 );
+		FlyCar car2 = new FlyCar("날으는 자동차", 1000);
+		Carpet carpet = new Carpet();
+		AirCar car3 = new AirCar("에어카");
+		
+		
+	
+		Member mem = new Member("29살 소녀", Gender.Female);
+		mem.rideCar(car1);
+		mem.driveCar();
+		mem.flyCar();
+		
+		mem.rideCar(car2);
+		mem.driveCar();
+		mem.flyCar();
+		mem.hasObject(carpet);
+		mem.carpetFly();
+		
+		mem.rideCar(car3);
+		mem.flyCar();
+		
+		
+	}
+	
+	//1. 캡슐화 - 클래스 사용하는 사람은 그 클래스가 어떻게 구현되었는지는 모른다.
+				//클래스는 만드는 사람은 만드는 의도에 따라서 값들을 숨길수 있따. 
+	//2. 추상화 - 클래스에서 특정 개체에대한 추상화
+				//인터페이스는 특정행위 인터페이스를 추상화하는 과정
+	//추상클래스는 인스턴스화 할 수 없다. - 상속 이외에는 사용이 불가
+	
+	//3. 다형성 - 똑같은 메써드를 호출해도 결과가 다르다. 
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4a42442e-786f-420e-990e-77f73e006f49/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4a42442e-786f-420e-990e-77f73e006f49/Untitled.png)
+
+[https://blog.naver.com/aiwositai/222055868051](https://blog.naver.com/aiwositai/222055868051)
+
+---
+
+78 교시
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2d10747a-57de-4803-b82e-e3a42d4890f7/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2d10747a-57de-4803-b82e-e3a42d4890f7/Untitled.png)
+
+```jsx
+package PKG_Car;
+
+public interface CallBack {
+	public void returnMsg(String methodName);
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class Member implements CallBack{  //CallBack 중간에서 메시지를 전달하는 역할 ? 
+
+	private String memName;
+	private Gender memGender;
+	private Car car; // 다른 Car car / 이 페이지에서만 쓸수있는 전역변수 
+	private Carpet carpet;
+	
+	public Member(String memName, Gender memGender) {
+		this.memName = memName;
+		this.memGender = memGender;
+		
+	}
+	
+	public void rideCar(Car car) { // up casting 을 이용해서 자동차를 받자  
+		//Car car 매개변수 카는 메인에서 쓸때 들어올 짝이 들어오는 자리인데
+		// flycar가 아니라 Car를 써준건  up casting 다른자동차도 들어올수있으니까 
+		
+		//29 소녀가 이쁜트럭을 탔어요
+		this.car = car;
+		System.out.println(this.memGender + this.memName+ "가 " + car.getCarName() + "을 탔어요 ");
+		
+	}
+		
+	public void driveCar() {
+		this.car.carRun();
+	}
+	
+	
+	public void flyCar() {
+		//혹시 this.car가 FlyCar타입이면 carFly()을 실행시켜줘
+		
+		/* //	인터페이스 추가하면 이거 할 필요 x 
+		if(this.car instanceof FlyCar) {
+			((FlyCar)car).carFly();
+		}
+		
+		*/
+		
+		//혹시 this.car가 날아가고 착륙한다는 기능을 가진 인터페이스를 장착햇니?
+		if(this.car instanceof Fly) {
+			((Fly)this.car).fly();
+		}
+		
+		else { 
+			System.out.println("미안 너는 날지못해");
+		}
+		
+	}
+
+	public void hasObject(Carpet carpet) {
+		this.carpet = carpet;
+	}
+	
+	public void carpetFly() {
+		if(carpet instanceof Fly) {
+			((Fly)this.car).fly();
+		}
+		else {
+			System.out.println("미안 너는 날지못해");
+		}
+	}
+	
+	public void returnMsg(String methodName) {
+		System.out.println(methodName + "실행이 완료되었습니다.");
+		
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class FlyCar extends Car implements Fly {
+
+	private int flyMaxSpeed;
+	private int nowSpeed = 0;
+	private CallBack callback;
+	
+	public FlyCar(String flyCarName, int flyMaxSpeed) {
+		super(flyCarName);
+		this.flyMaxSpeed = flyMaxSpeed;
+		
+	}
+	
+	public void setMember(Member mem) { // up / 플라이카를 타고있는 사람이 누군지를 알려주고..?
+		this.callback = mem;
+	}
+	
+	@Override
+	public void carRun() {
+		String flyCarName = super.getCarName();
+		nowSpeed += 100;
+		
+		if(flyMaxSpeed < nowSpeed) {
+			System.out.println(flyCarName + "플라이카는 더이상 속도를 올릴수 없습니다.");
+			
+			//member의 returnMsg()를 호출해서 더 이상 속도를 올릴수 없을을 알리고 싶다.
+			callback.returnMsg("carRun");
+			
+		}
+		else {
+			System.out.println(flyCarName + "플라이카 현재속도는" + nowSpeed);
+		}
+		
+	}
+	
+	@Override
+	public void fly() {
+		String flyCarName = super.getCarName();
+		System.out.println(flyCarName + "플라이카가 날아간다");
+	}
+	
+	@Override
+	public void land() {
+		System.out.println("착륙");
+	}
+	
+	//딱 한번만 사용가능
+	public void getMoney() {
+		
+	}
+		
+}
+```
+
+```jsx
+package PKG_Car;
+
+public class CarExam {
+
+	public static void main(String[] args) {
+					
+		Truck car1 = new Truck("이쁜트럭", 10 );
+		FlyCar car2 = new FlyCar("날으는 자동차", 500);
+		Carpet carpet = new Carpet();
+		AirCar car3 = new AirCar("에어카");
+		
+		
+		Member mem2 = new Member("32살", Gender.Male);
+		Member mem = new Member("29살 소녀", Gender.Female);
+//		mem.rideCar(car1);
+//		mem.driveCar();
+//		mem.flyCar();
+		
+		car2.setMember(mem); // 누가 차를 탈건지 알려주고
+		mem.rideCar(car2);
+		
+		mem.driveCar();
+		mem.driveCar();
+		mem.driveCar();
+		mem.driveCar();
+		mem.driveCar();
+		mem.driveCar(); // 속도를 올릴수 없는 상황이되면 멤버인 나한테 returnMsg를 알려줘
+//		mem.flyCar();
+//		mem.hasObject(carpet);
+//		mem.carpetFly();
+		
+		mem.rideCar(car3);
+		mem.flyCar();
+			
+	}
+	
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/52cfb1de-cbfb-4310-be50-2ffe27776d50/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/52cfb1de-cbfb-4310-be50-2ffe27776d50/Untitled.png)
