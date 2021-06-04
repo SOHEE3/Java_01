@@ -1,0 +1,305 @@
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2c752e7f-acdf-4132-9ea2-b94e671fdcb6/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2c752e7f-acdf-4132-9ea2-b94e671fdcb6/Untitled.png)
+
+```jsx
+package java_0603;
+
+public class Member implements CallBack{  // 멤버안에 만들어놓은 함수를 다시 호출하는...? 내가 콜을하면 
+	//CallBack - 통신 인터페이스.. 반대쪽에서 나를 호출할수있도록..?
+	
+	private Car car;
+	private int point = 0;
+	
+	public void rideCar(Car car) {
+		this.car = car;
+	}
+	
+	public void getPoint() {
+		
+		//한번만 포인트를 획득해야한다.
+			car.getPoint();
+					
+	}
+	
+	@Override
+	public void ResultMsg(int hasPoint) {
+		//public void ResultMsg(1000) 
+		
+		point += hasPoint;
+		
+		//this.point += hasPoint; // this 제일 상위로 간다
+		System.out.println("새롭게 획득한 포인트는" + hasPoint );
+		System.out.println("총 포인트는" + point );
+		
+	}
+	
+	
+}
+```
+
+```jsx
+package java_0603;
+
+public class Car { 
+
+	private int      hasPoint;
+	private CallBack callback;  // 인터페이스 기능을 아예 탑재할래 
+	
+	public Car(int hasPoint) {
+
+		this.hasPoint = hasPoint;
+
+	}
+	
+	public void carRun() {
+		System.out.println("자동차가 달린다.");
+	}
+	
+	public void getPoint() {
+		
+		
+		if(hasPoint != 0) {
+			System.out.println("포인트를 획득했어요");
+			this.callback.ResultMsg(hasPoint);
+			//1. mem.ResultMsg(hasPoint);
+			//2. mem.ResultMsg(1000);
+			
+			
+			//return hasPoint;  // 리턴하면 이 뒤는 코딩 불가능 그래서 콜백..?
+			
+		}
+		else {
+			System.out.println("포인트가 없어요");
+		}
+		
+		//member 안에 있는 메서드를 호출해줘 ->  pointResult() 
+		this.hasPoint = 0;  // 자동차 포인트를 없앤다 ex) 입출금 
+		
+	}
+	
+	public void rideCar(CallBack callback) {
+		//CallBack callback = mem
+		
+		this.callback = callback;  // 
+		//1. this.callback = mem = Member mem = new Member();
+		//this.callback = new Member();
+		//Callback callback = mew Member();
+		
+		//1. this.callback = mem = Member mem = new Member();
+		//this.callback = new Member();
+		//Callback callback = new Member();		
+	}
+	
+	/*
+	public void Car(int hasPoint) {
+
+		this.hasPoint = hasPoint;  // (값을)  - hasPoint 여기 넣고 - 그결과값을 this.hasPoint 넣고
+		this.hasPoint 이게 젤위에 있다 
+
+	}
+	*/
+
+[버리는 식]	-----------------------------
+	// 프로그램 실행순서가 1 이되야 하는데 나중에 자동차 포인트를 멤버한테 줬으니까 초기화가 되어야 하고
+	//그러려면 return 뒤에 0 점처리가 되어야하는데 return 뒤에는 함수가 올수없다
+	// 그래서 2 를 실행하자니 또 안맞음
+	// --> 이걸 해결하기 위해 쓰는것이 callback 이다 
+	
+	public int getCarPoint() {
+		//1.hasPoint = 1000
+		//2.hasPoint=0
+		return this.hasPoint;
+		//1.hasPoint=0
+		
+	}
+--------------------------------------------------------	
+	
+
+	
+}
+```
+
+```jsx
+package java_0603;
+
+public interface CallBack {
+	
+	public void ResultMsg(int hasPoint);
+	
+	
+}
+```
+
+```jsx
+package java_0603;
+
+public class CarExam {
+
+	public static void main(String[] args) {
+		//---- [최초로 그 차량을 탑승한 사람만 포인트를 획득한다 - 이 프로그램의 목적]-------
+		Car myCar = new Car(1000);
+		//myCar.carRun();
+		
+		Car myCar2 = new Car(1500);
+		
+		Car myCar3 = new Car(2000);
+		
+		Member mem = new Member();
+		mem.rideCar(myCar);
+		myCar.rideCar(mem);
+				// 서로 한테 알려준다  ex) 차 대여 - 실제로는 한대인데 안알려주면 무한대로 대여됨
+		mem.getPoint();				
+		mem.getPoint();
+		
+		System.out.println("");
+		myCar2.rideCar(mem);
+		mem.rideCar(myCar2);
+		mem.getPoint();
+		
+		
+
+		
+	/*	
+		Member mem2 = new Member();
+		mem2.rideCar(myCar);
+		mem2.getPoint();
+		mem2.getPoint();
+	*/	
+		
+		
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a1b8e7f6-d9d8-4f64-a962-23133c601c29/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a1b8e7f6-d9d8-4f64-a962-23133c601c29/Untitled.png)
+
+car1이 가지고 있던 포인트가 mem한테 옮겨지고 car는 포인트가 사라짐
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eb9550a2-9731-4bd3-9896-35a15b9f6e6b/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eb9550a2-9731-4bd3-9896-35a15b9f6e6b/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/64109bca-633a-4a22-873b-e7874adedc00/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/64109bca-633a-4a22-873b-e7874adedc00/Untitled.png)
+
+---
+
+나혼자
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/43defe97-44fd-43c7-b4b0-546bc45e1828/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/43defe97-44fd-43c7-b4b0-546bc45e1828/Untitled.png)
+
+```jsx
+package java_0603_test;
+
+public class Car2 {
+	
+	private int C_Point;  // this.C_Point 여기에 저장된다.
+	private CallBack2 callback; // ---
+	
+	public Car2(int G_Point) {
+		this.C_Point = G_Point; // main에서 저장된 최초 포인트
+		
+	}
+	
+	// 포인트 함수 
+	public void getPoint() {
+		
+		if(C_Point != 0) {
+			System.out.println("최초 포인트를 획득하였습니다.");
+			this.callback.Msg(C_Point); // 여기 적은 이유가 자동차가 포인트를 가지면 안돼서 // 포인트가 고객에게 쌓이는 자리(계좌이체)
+			
+		}
+		else {
+			System.out.println(" 포인트가 없는 차 입니다.");
+		}
+		
+		this.C_Point =0; // 자동차의 포인트를 없애줘야헤서 
+		
+	}
+	
+	// 멤버가 무슨차를 탔는지
+	public void rideCar(CallBack2 callback) { // 멤버가 탈 곳이 필요해서 up casting
+		this.callback = callback;
+	}
+	
+}
+```
+
+```jsx
+package java_0603_test;
+
+public class Member2 implements CallBack2 {
+	
+	private Car2 car;
+	private int Point = 0;
+	
+	//멤버가 어떤차를 탈거냐
+	public void rideCar(Car2 car) {
+		this.car = car;
+	}
+	
+	//자동차의 포인트를 가져온다 - 여기 설정 안해준 이유? 자동차에게서 포인트를 넘겨받아와야해서..? 
+	// 멤버에 포인트를 가져오는 함수를 설정하면 처음 자동차 포인트만 들고오고 다른자동차의 포인트를 받을수없다 
+	public void getPoint() {
+		// 1회만 포인트 획득 //  
+		car.getPoint();				
+	}
+	
+	// 포인트 획득 결과 메시지를 띄운다
+	@Override
+	public void Msg(int Point) {
+		
+		this.Point += Point ;
+		System.out.println("new 포인트: " + Point );
+		System.out.println("total 포인트: " + this.Point);
+		
+	}
+	
+	
+}
+```
+
+```jsx
+package java_0603_test;
+
+public interface CallBack2 {
+
+	public void Msg(int Point);  // int Point 상속 비슷 여기먼저 설정 
+	
+}
+```
+
+```jsx
+package java_0603_test;
+
+public class CarEx2 {
+
+	public static void main(String[] args) {
+		
+		Car2 myCar = new Car2(100);
+		
+		Car2 myCar2 = new Car2(200);
+		
+		Car2 myCar3 = new Car2(300);
+		
+		Member2 mem1 = new Member2();
+		mem1.rideCar(myCar);
+		myCar.rideCar(mem1);
+		
+		mem1.getPoint();
+		mem1.getPoint(); // 포인트 쓴 차니까 포인트 없는 차라고 나와야함 
+		
+		mem1.rideCar(myCar2);
+		myCar2.rideCar(mem1);
+		
+		mem1.getPoint();
+		mem1.getPoint(); //
+		
+		mem1.rideCar(myCar3);
+		myCar3.rideCar(mem1);
+
+		mem1.getPoint();
+		mem1.getPoint(); //
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f1335865-fb53-4e6b-82d3-d57a3ff87734/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f1335865-fb53-4e6b-82d3-d57a3ff87734/Untitled.png)
