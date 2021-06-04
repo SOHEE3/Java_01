@@ -1,0 +1,209 @@
+//예외처리 : 프로그램을 배포하고 런타임엥서 에러가 발생하면 자연스럽게 그 에러를 처리하기 위해서 사용 
+//C# C++ 은 예외처리를 개발자가 하지 않으면 그냥 하지 않는다
+//java는 엔진이 판단했을때 에러가 발생할 소지가 있다면 강제로 예외처리를 시킨다.
+
+예외 처리란?
+
+개발자가 작성한 프로그램의 실행 중에 예외가 발생하면
+
+이에 대응하는 것을 말한다.
+
+```jsx
+try{
+    예외가 발생할 가능성이 있는 실행문(try 블록)
+}
+catch (처리할 예외 타입 선언){
+    예외 처리문(catch 블록)
+}
+finally{ // 생략가능
+    예외 발생 여부와 상관없이 무조건 실행되는 문장(finally 블록)
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4e74a17e-8c50-4e5d-9aa4-b91ebbe09ecb/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4e74a17e-8c50-4e5d-9aa4-b91ebbe09ecb/Untitled.png)
+
+alt + shift + z  : 알아서 찾아줌 
+
+```jsx
+try {
+				int i =0;  //1 0으로 오류 띄웠을때
+				
+				int j = 12 / i;  // 0으로 나누면 오류 
+				
+				System.out.println(j);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(); // 개발자들이 개발할때 쓰는 
+			}
+			finally {
+				
+			}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d3ccf801-ce28-4858-a40b-129ae397be5c/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d3ccf801-ce28-4858-a40b-129ae397be5c/Untitled.png)
+
+/by zero 0으로 나눠서 에러가 났다~ + 전체에러 보여줌 
+
+---
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ab195de4-dfd2-4c2d-90e1-e490c0a8cb3a/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ab195de4-dfd2-4c2d-90e1-e490c0a8cb3a/Untitled.png)
+
+```jsx
+package java_0604;
+
+public class TVBox implements CallBack {
+	
+	private PCB pcb;
+	
+	// tv가 하나 생성될때 pcb도 하나 생성되는걸 한 부분에 정의
+	public TVBox(String pcbName) {
+		pcb = new PCB(pcbName);  
+	}
+	
+	public PCB getPCB() {
+		return this.pcb;
+	}
+	
+	public void TurnOn() {
+		//전원 버튼을 눌러서 키는 동작
+		//PCB로 전원버튼을 눌렀다는 사실을 전달한다.
+		
+		pcb.realTurnOn();
+		//전원 켜졌어? -> 전원이 켜졌으면 알려줘
+		
+	}
+	
+	@Override
+	public void RecieveMsg (String str) {
+		System.out.println(str + "가 켜졌어요");
+	}
+	
+	public void VolumeUp() {
+		pcb.realVolumeUp();
+	}
+	public void VolumeDown() {
+		pcb.realVolumeDown();
+	}
+
+}
+```
+
+```jsx
+package java_0604;
+
+public class PCB {
+	
+	private String pcbName;
+	private int volume = 0;
+	private CallBack callback;
+	//return 으로는 불가능한 코딩이 있따.
+	
+	// @pcb관련정보를 main에서 저장해야해서-[]- [PCB pcb] = tv.getPCB();
+	public PCB(String pcbName) {
+		this.pcbName = pcbName;
+	}
+	
+	// tv가 꺼졌는지 켜졌는지 알기위해서 -> callback(답을해주는 주체가 들어가야함)/실제로 꺼졌는지 켜졌는지/ 에 넣어야함 
+	public void setTVBox(CallBack tvbox) {
+		this.callback = tvbox;
+	}
+	
+	
+	public void realTurnOn() {
+		
+		try {
+			
+			//켜지는 속도 - 랜덤
+			double dValue = Math.random();  // Math.random 0~1까지의 랜덤으로 모든수가 나옴 
+			// String test= sedan.flyCar();
+			int t = (int)(dValue * 10000); // 10000 *  0.1 해서 바꿔줌
+			
+			Thread.sleep(t); // 실행을 지연시키는 함수 1000 -1 초 
+			// 켜지는 속도를 랜덤으로 tv1 tv2 둘중에 누가 먼저?
+			
+			System.out.println("전원을 키기 위한 회로가 동작 " + t);
+			callback.RecieveMsg(pcbName); // pcb가 켜졌는지 알기위해 /쌍방향 통신 
+			//callback.RecieveMsg("PCB");
+		
+						
+		} 
+		catch ( InterruptedException e ) {
+			e.printStackTrace(); //
+		}
+	
+	}
+	
+	public void realVolumeUp() {
+		volume++;
+		System.out.println("볼륨" + volume);
+	}
+	public void realVolumeDown() {
+		volume--;
+		System.out.println("볼륨" + volume);
+	}
+	
+	
+}
+```
+
+```jsx
+package java_0604;
+
+public interface CallBack {
+	public void RecieveMsg (String str);
+	
+}
+```
+
+```jsx
+package java_0604;
+
+public class TVExam {
+
+	public static void main(String[] args) {
+
+		TVBox tv = new TVBox("PCB");
+		TVBox tv2 = new TVBox("PCB2");
+		
+		PCB pcb = tv.getPCB();  //@tv.getPCB(); tv에서 생성된 PCB 정보를 가져와야해서 
+		pcb.setTVBox(tv); //tv 전원유무 판단
+		tv.TurnOn();
+		
+		PCB pcb2 = tv2.getPCB();
+		pcb2.setTVBox(tv2);
+		tv2.TurnOn();
+		
+	// 두개가 동시에 실행될때 속도 
+	// 쓰레드 .. 눈으로 보기에는 차례대로 실행될것같지만 (꼬이는 경우가 있다 - 비동기) 
+		//자바(대부분 객체지향프로그램)에서는 아님 
+	// 그래서 콜백으로 실행되고 있는지 확인
+	
+	
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f13a3aa-6874-4698-bee4-7a25aabbb310/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f13a3aa-6874-4698-bee4-7a25aabbb310/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e4b5ca15-093b-438d-94b2-1ed4c046774d/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e4b5ca15-093b-438d-94b2-1ed4c046774d/Untitled.png)
+
+랜덤으로 실행된다 8402- 실행되는 속도 
+
+1. Compile 에러
+2. Runtime 에러 : ----- 예외처리 -----------------
+3. Logic 에러
+
+alt shift z
+
+//예외처리 : 프로그램을 배포하고 런타임엥서 에러가 발생하면 자연스럽게 그 에러를 처리하기 위해서 사용
+//C# C++ 은 예외처리를 개발자가 하지 않으면 그냥 하지 않는다
+//java는 엔진이 판단했을때 에러가 발생할 소지가 있다면 강제로 예외처리를 시킨다.
+
+---
+
+pcb.realTurnOn();
+//전원 켜졌어? -> 전원이 켜졌으면 알려줘
+pcb.realTurnOn();  // 두개 동시에 실행될때 .. 쓰레드.. ?
+
+델리게이트 읽어봐라~
