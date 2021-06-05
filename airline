@@ -1,0 +1,315 @@
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d21c634-2688-49ec-b387-573079cc89e8/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d21c634-2688-49ec-b387-573079cc89e8/Untitled.png)
+
+```jsx
+package PKG_Route2;
+
+public class Route2 {
+
+	private String rou_Name;
+	private int rou_Price;
+	private int gubun;
+
+	public Route2(String rou_Name, int rou_Price, int Gubun) {
+
+		this.rou_Name = rou_Name;
+		this.rou_Price = rou_Price;
+		this.gubun = Gubun;	
+	}
+
+	// 노선이름
+	public String getRouteName() {
+		return this.rou_Name;		
+	}
+	
+	// 가격 
+	public int getRoutePrice() {
+		return this.rou_Price;
+	}
+	
+	// 국내외 노선 구분
+	public int getRouteGubun() {
+		return this.gubun;
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Route2;
+
+public class Germany2 extends Route2{
+
+	public Germany2( String rou_Name, int rou_Price) {
+		
+		super(rou_Name, rou_Price, 1);
+	}
+	
+}
+```
+
+```jsx
+package PKG_Route2;
+
+public class Busan2 extends Route2{
+
+	public Busan2(String rou_Name, int rou_Price) {
+		
+		super(rou_Name, rou_Price, 0);
+		
+	}
+	
+}
+```
+
+```jsx
+package PKG_Air2;
+
+public abstract class Airline2 {
+
+	private String airline;
+	private int gubun;
+	
+	public Airline2 (String aName, int Gubun) {
+		
+		this.airline = aName;
+		this.gubun = Gubun;
+		
+	}
+		
+	public abstract void Info();
+	
+	//항공사 구분
+	public int AirGubun() {
+		return this.gubun;
+	}
+	
+}
+```
+
+```jsx
+package PKG_Air2;
+
+public class Dan2 extends Airline2{
+
+	public Dan2( String aName ) {
+		super(aName, 0);
+		
+	}
+		
+	@Override
+	public void Info() {
+		System.out.println("국내-대한항공 노선입니다");
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Air2;
+
+public class Jeju2 extends Airline2{
+
+	public Jeju2(String aName) {
+		super(aName, 0);
+		
+	}
+
+	@Override
+	public void Info() {
+		System.out.println("국내-제주항공 노선입니다");
+	}
+	
+	
+	
+}
+```
+
+```jsx
+package PKG_Air2;
+
+public class Qatar2 extends Airline2{
+
+	public Qatar2(String aName) {
+		super(aName, 1);
+		
+	}
+	
+	@Override
+	public void Info() {
+		System.out.println("해외-카타르항공 노선입니다");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Member2;
+
+public abstract class Member2 {
+		private String mName;
+		private String mGrade;
+		
+		public Member2(String mName, String mGrade) {
+			this.mName = mName;
+			this.mGrade = mGrade;			
+		}
+	
+		public String getMemName() {			
+			return this.mName;
+		}
+		
+		public String getMemGrade() {
+			return this.mGrade;
+		}
+		
+		
+}
+```
+
+```jsx
+package PKG_Member2;
+
+public class Gold2 extends Member2{
+
+	public Gold2 (String m_Name) {
+		super(m_Name, "Gold" );
+	}
+	
+	
+}
+```
+
+```jsx
+package PKG_Member2;
+
+public class Silver2 extends Member2{
+
+	public Silver2 (String m_Name) {
+		super(m_Name,"Silver");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Member2;
+
+public class Bronze2 extends Member2{
+	
+	public Bronze2 (String m_Name) {
+		super(m_Name,"Bronze");
+	}
+	
+}
+```
+
+```jsx
+package PKG_Reservation2;
+
+import PKG_Air2.*;
+import PKG_Member2.*;
+import PKG_Route2.*;
+
+public class Reservation2 {
+
+	// 가격 담을 매개변수
+	private double ticketPrice;
+
+	public Reservation2(Member2 mem, Route2 route, Airline2 airline, int Qty) {
+
+		// 0. 고객의 이름 가져오기
+		System.out.println("고객이름: " + mem.getMemName());
+
+		// 1. 고객의 등급 가져오기
+		System.out.println("고객등급: " + mem.getMemGrade());
+
+		// 2. 노선의 이름 가져오기(목적지)
+		System.out.println("노선이름: " + route.getRouteName() + "행 "+Qty + "매");
+
+		// 3. 노선이 국내 / 해외 노선인지 가져오기
+		System.out.println("국내외 노선:" + route.getRouteGubun());
+
+		// 4. 노선의 가격정보 가져오기
+		System.out.println("노선 가격: " + route.getRoutePrice());
+
+		// 5. 항공사의 국내 / 해외 항공사인지 가져오기
+		System.out.println("국내외 항공사 정보 :" + ((airline.AirGubun() == 0) ? "국내항공사" : "해외항공사"));
+
+		// 할인
+
+		if (mem.getMemGrade() == "Gold") {
+			// 골드 회원 20 퍼 할인
+			ticketPrice += (route.getRoutePrice() * 0.8) * Qty;
+			System.out.println("등급 할인 가격: " + ticketPrice);
+			// 같은 노선일때 할인 5퍼
+			if (route.getRouteGubun() == airline.AirGubun()) {
+				System.out.println("------같은 노선 할인입니다--- ");
+				ticketPrice = ticketPrice * 0.95;
+				System.out.println("티켓의 총 가격은: " + ticketPrice);
+			}
+			System.out.println("=======================================");
+		} 
+		else if (mem.getMemGrade() == "Silver") {
+			// 실버 회원 10 퍼 할인
+			ticketPrice += (route.getRoutePrice() * 0.9)*Qty;
+			System.out.println("등급 할인 가격: " + ticketPrice);
+			// 같은 노선일때 할인
+			if (route.getRouteGubun() == airline.AirGubun()) {
+				System.out.println("----같은 노선 할인입니다--- ");
+				ticketPrice = ticketPrice * 0.95;
+				System.out.println("티켓의 총 가격은: " + ticketPrice);
+			}
+			System.out.println("=======================================");
+		}
+
+		else {
+			ticketPrice +=( route.getRoutePrice() )*Qty;
+			System.out.println("티켓 가격 : " + ticketPrice);
+			if (route.getRouteGubun() == airline.AirGubun()) {
+				System.out.println("----같은 노선 할인입니다--- ");
+				ticketPrice = ticketPrice * 0.95;
+				System.out.println("티켓의 총 가격은: " + ticketPrice);
+			}
+			
+			System.out.println("=======================================");
+		}
+
+	}//public Reservation2(
+
+}
+```
+
+```jsx
+package PKG_Member2;
+
+import PKG_Air2.*;
+import PKG_Reservation2.*;
+import PKG_Route2.*;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Airline2 Dan = new Dan2("대한항공");
+		Airline2 Qatar = new Qatar2("Qatar2");
+		
+		Gold2 gold_01 = new Gold2(" 김뚱땅 ");
+		Silver2 silver_01 = new Silver2(" 김연님 ");
+		Bronze2 Bronze_01 = new Bronze2(" 김래기 ");
+		
+		Route2 busan = new Busan2("부산", 50000);
+		Route2 germany = new Germany2("독일",2200000);
+		 
+		Reservation2 res1 = new Reservation2(gold_01, germany, Qatar, 5);
+		Reservation2 res2 = new Reservation2(silver_01, germany, Dan, 2);
+		Reservation2 res3 = new Reservation2(Bronze_01, busan, Dan, 10);
+		
+
+	}
+
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7855763b-202c-44e9-813c-37e6baeb4295/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7855763b-202c-44e9-813c-37e6baeb4295/Untitled.png)
