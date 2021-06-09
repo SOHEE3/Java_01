@@ -1,0 +1,710 @@
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a81e4e18-6fa7-448d-a0bc-9c3801828b74/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a81e4e18-6fa7-448d-a0bc-9c3801828b74/Untitled.png)
+
+```java
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@ page import ="java.sql.*" %>
+	<jsp:useBean id="TC" class="PKG_Test_01.TestClass_01" scope="page" />  <!-- @문법 -->
+	
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<%
+	// TestClass TC = new TestClass(); @이것과 동일한 코딩
+	TC.setName("안녕");
+	String strName = TC.getName();
+	
+	int sum = TC.getSum(100);
+	
+	out.print("<font color='red' size='7'>" +sum + "</font>");
+	
+	%>
+
+<%= strName %>
+<%= sum %>
+</body>
+</html>
+```
+
+```java
+package PKG_Test_01;
+
+public class TestClass_01 {
+
+	private String strName;
+	
+	public void setName(String strName) {
+		this.strName = strName;
+	}
+	
+	public String getName() {
+		return strName;
+	}
+	
+	public int getSum(int num) {
+		
+		int result = 0;
+		
+		for(int i=1; i<=num; i++) {
+			
+			result += i;
+		}
+		
+		return result;
+		
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7d1f76a2-4395-4037-af0b-cb0bf28fca06/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7d1f76a2-4395-4037-af0b-cb0bf28fca06/Untitled.png)
+
+---
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b852890c-9658-4f9d-ac5e-b8bf2d55ac70/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b852890c-9658-4f9d-ac5e-b8bf2d55ac70/Untitled.png)
+
+```java
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page import ="java.sql.*" %>
+    
+   <jsp:useBean id="TC" class="PKG_Test.TestClass" scope="page"/> <!-- @문법 -->
+  <!-- scope page, response, request, application -->
+  <jsp:useBean id = "DBCon" class ="PKG_DB.DBhandle" scope="page" />
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+	/*
+		// TestClass TC = new TestClass(); @이것과 동일한 코딩
+		
+		TC.setName("안녕");
+		String strName = TC.getName();
+		
+		int sum = TC.getSum(100);
+		
+		out.print("<font color = 'red' size='7'  >" + sum + "</font>"); 
+		//char chr='B';
+		
+	
+		String userID = "scoredb";
+		String userPass = "1";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		
+	 */
+	
+	
+		
+		String[] dbInfos = new String[3];
+		dbInfos[0] = "jdbc:oracle:thin:@localhost:1521:xe";
+		dbInfos[1] = "scoredb";
+		dbInfos[2] = "1";
+	
+		DBCon.setDBInfo(dbInfos);
+	
+		Connection con = DBCon.getConnection();
+	
+		
+		Statement stmt = con.createStatement();
+		
+		
+		String strSql = "SELECT *FROM BOARD";
+		
+		ResultSet rs = stmt.executeQuery(strSql);
+		
+		while(rs.next()){
+				out.print(rs.getString("TITLE") + "<br/>");
+		}
+		
+		
+	%>
+
+<!--   <=% sum %> -->	
+
+</body>
+</html>
+```
+
+```java
+package PKG_DB;
+ 	
+import java.sql.*;
+import java.sql.Connection;
+
+public class DBhandle {
+
+	private String userID;
+	private String userPass;
+	private String url;
+	private String[] dbInfos;
+	
+	public void setDBInfo(String[] dbInfos) {
+		this.dbInfos = dbInfos;
+	}
+	
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public void setUserPass(String userPass) {
+		this.userPass = userPass;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
+	public Connection getConnection() {
+		
+		Connection con = null;
+
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			//con = DriverManager.getConnection(url, userID, userPass);
+			
+			con = DriverManager.getConnection(dbInfos[0], dbInfos[1], dbInfos[2]);
+			 
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e) { // Exception 최상위 오류 걸러줌 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return con;
+					
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1a67e07d-5b37-400c-a1d7-ae2cad26b822/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1a67e07d-5b37-400c-a1d7-ae2cad26b822/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/425ad6d7-ab4f-4463-9df4-d7e437a31d13/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/425ad6d7-ab4f-4463-9df4-d7e437a31d13/Untitled.png)
+
+실행값
+
+---
+
+```java
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page import ="java.sql.*" %>
+    
+   <jsp:useBean id="TC" class="PKG_Test.TestClass" scope="page"/> <!-- @문법 -->
+  <!-- scope page, response, request, application -->
+  <jsp:useBean id = "DBCon" class ="PKG_DB.DBhandle" scope="page" />
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+	/*
+		// TestClass TC = new TestClass(); @이것과 동일한 코딩
+		
+		TC.setName("안녕");
+		String strName = TC.getName();
+		
+		int sum = TC.getSum(100);
+		
+		out.print("<font color = 'red' size='7'  >" + sum + "</font>"); 
+		//char chr='B';
+		
+	
+		String userID = "scoredb";
+		String userPass = "1";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		
+	 */
+	
+	
+		
+		String[] dbInfos = new String[3];
+		dbInfos[0] = "jdbc:oracle:thin:@localhost:1521:xe";
+		dbInfos[1] = "scoredb";
+		dbInfos[2] = "1";
+	
+		DBCon.setDBInfo(dbInfos);
+		
+		String strSql = "DELETE FROM BOARD WHERE IDX=81";
+		DBCon.executeQuery(strSql);
+		
+	/*
+		Connection con = DBCon.getConnection();
+	
+		
+		Statement stmt = con.createStatement();
+		
+		
+		String strSql = "SELECT *FROM BOARD";
+		
+		ResultSet rs = stmt.executeQuery(strSql);
+		
+		while(rs.next()){
+				out.print(rs.getString("TITLE") + "<br/>");
+		}
+		*/
+		
+	%>
+
+<!--   <=% sum %> -->	
+
+</body>
+</html>
+```
+
+```java
+package PKG_DB;
+ 	
+import java.sql.*;
+
+public class DBhandle {
+
+	private String userID;
+	private String userPass;
+	private String url;
+	private String[] dbInfos;
+	private Connection con;
+	
+	public void setDBInfo(String[] dbInfos) {
+		this.dbInfos = dbInfos;
+	}
+	
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public void setUserPass(String userPass) {
+		this.userPass = userPass;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
+	public void getConnection() {
+		
+		 this.con = null;
+
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			//con = DriverManager.getConnection(url, userID, userPass);
+			
+			this.con = DriverManager.getConnection(dbInfos[0], dbInfos[1], dbInfos[2]);
+			 
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e) { // Exception 최상위 오류 걸러줌 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+					
+	}
+	
+	// inline query select, delete, update ,insert
+	
+	public Statement getStatement() {
+		
+		getConnection();
+		
+		Statement stmt = null;
+		try {
+			 stmt = this.con.createStatement();
+			 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return stmt;
+		
+	}
+	
+	// insert, delete, update 
+	public void executeQuery(String strSql) {
+		
+		Statement stmt = getStatement();
+		
+		try {
+			stmt.execute(strSql);
+			
+			this.con.close();
+			this.con = null;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0752cf93-38ab-447e-b9c3-fd100b8a03dd/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0752cf93-38ab-447e-b9c3-fd100b8a03dd/Untitled.png)
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4b393012-aba1-4b5a-81f8-4740d6c71624/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4b393012-aba1-4b5a-81f8-4740d6c71624/Untitled.png)
+
+---
+
+---
+
+```java
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page import ="java.sql.*" %>
+    
+   <jsp:useBean id="TC" class="PKG_Test.TestClass" scope="page"/> <!-- @문법 -->
+  <!-- scope page, response, request, application -->
+  <jsp:useBean id = "DBCon" class ="PKG_DB.DBhandle" scope="page" />
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<%
+	/*
+		// TestClass TC = new TestClass(); @이것과 동일한 코딩
+		
+		TC.setName("안녕");
+		String strName = TC.getName();
+		
+		int sum = TC.getSum(100);
+		
+		out.print("<font color = 'red' size='7'  >" + sum + "</font>"); 
+		//char chr='B';
+		
+	
+		String userID = "scoredb";
+		String userPass = "1";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		
+	 */
+	
+	
+		
+		String[] dbInfos = new String[3];
+		dbInfos[0] = "jdbc:oracle:thin:@localhost:1521:xe";
+		dbInfos[1] = "scoredb";
+		dbInfos[2] = "1";
+	
+		DBCon.setDBInfo(dbInfos);
+		
+		//삭제
+		String strSql = "DELETE FROM BOARD WHERE IDX=81";
+		DBCon.executeQuery(strSql);
+		
+		//insert
+		String strSql2 = "SELECT * FROM BOARD ";
+		ResultSet rs = DBCon.getResultSet(strSql2);
+		
+		while(rs.next()){
+			out.print(rs.getString("TITLE") + "<br/>");
+		}
+		
+		String strProc = "{call PKG_BOARD.PROC_BOARD_INS(?,?,?,?)}";
+		
+		String[] strParams = new String[4];
+		strParams[0] = "this is a Title";
+		strParams[1] = "this is a content";
+		strParams[2] = "Mem001";
+		strParams[3] = "M001";
+		
+		DBCon.executeQuery(strProc, strParams);
+		
+		//---------------------------------------------------
+		
+		String strProc2 = "{call PKG_BOARD.PROC_BOARD_SEL(?,?,?)}";
+
+		String[] strParams2 = new String[2];
+		strParams2[0] = "List";
+		strParams2[1] = "";
+		
+		ResultSet rs2 = DBCon.getResultSet(strProc2, strParams2);
+		
+		while(rs.next()){
+			out.print(rs2.getString("TITLE") + "<br/>");
+		}
+		
+	/*
+		Connection con = DBCon.getConnection();
+	
+		
+		Statement stmt = con.createStatement();
+		
+		
+		String strSql = "SELECT *FROM BOARD";
+		
+		ResultSet rs = stmt.executeQuery(strSql);
+		
+		while(rs.next()){
+				out.print(rs.getString("TITLE") + "<br/>");
+		}
+		*/
+		
+	%>
+
+<!--   <=% sum %> -->	
+
+</body>
+</html>
+```
+
+```java
+package PKG_DB;
+ 	
+import java.sql.*;
+
+import oracle.jdbc.OracleTypes;
+
+public class DBhandle {
+
+	private String userID;
+	private String userPass;
+	private String url;
+	private String[] dbInfos;
+	private Connection con;
+	
+	public void setDBInfo(String[] dbInfos) {
+		this.dbInfos = dbInfos;
+	}
+	
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public void setUserPass(String userPass) {
+		this.userPass = userPass;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
+	public void getConnection() {
+		
+		 this.con = null;
+
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			//con = DriverManager.getConnection(url, userID, userPass);
+			
+			this.con = DriverManager.getConnection(dbInfos[0], dbInfos[1], dbInfos[2]);
+			 
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e) { // Exception 최상위 오류 걸러줌 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+					
+	}
+	
+	// inline query select, delete, update ,insert
+	
+	public Statement getStatement() {
+		
+		getConnection();
+		
+		Statement stmt = null;
+		try {
+			 stmt = this.con.createStatement();
+			 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return stmt;
+		
+	}
+	
+	// insert, delete, update 
+	public void executeQuery(String strSql) {
+		
+		Statement stmt = getStatement();
+		
+		try {
+			stmt.execute(strSql);
+			
+			this.con.close();
+			this.con = null;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+	}
+	
+	//insert
+	public ResultSet getResultSet(String strSql) {
+		
+		Statement stmt = getStatement();
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(strSql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
+	
+	//1. procedure 를 활용해서 output parameter 존재하지 않는 경우
+	
+	public void executeQuery(String strProcName, String[] strParams ) { //String[] strParams 매개변수 몇개인지 모르니까 배열
+		
+		getConnection();
+		
+		try {
+			CallableStatement csmt = this.con.prepareCall(strProcName);
+			
+			for(int i=0;i< strParams.length;i++) {
+				csmt.setString(i+1, strParams[i]);  // i+1 0부터 시작했으니까 
+			}
+			
+			csmt.execute();
+			
+			this.con.close();
+			this.con = null;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	//2. outparameter 존재하는 경우- ResultSet - output Cursor
+	
+	public ResultSet getResultSet(String strProcName, String[] strParams) {
+		
+		getConnection();
+		
+		ResultSet rs = null;
+		
+		try {
+			CallableStatement csmt = this.con.prepareCall(strProcName);
+			
+			
+			int paramsLength = strParams.length;
+			for(int i=0;i< paramsLength; i++) {
+				csmt.setString(i+1, strParams[i]);  
+			}
+			
+			csmt.registerOutParameter(paramsLength+1, OracleTypes.CURSOR);
+			
+			csmt.execute();
+			
+			rs = (ResultSet)csmt.getObject(paramsLength+1);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rs;
+	}
+	
+}
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dc0dc151-dca2-4376-8531-7a7367058aa1/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dc0dc151-dca2-4376-8531-7a7367058aa1/Untitled.png)
+
+---
+
+---
+
+```java
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<form name="testForm" action = "memberJoin_ok.jsp">
+		<div>
+			성별
+			<label><input type = "radio" name = "gender" value = "Male" /> 남자</label>
+			<label><input type = "radio" name = "gender" value = "Female" /> 여자</label>
+			<label><input type = "radio" name = "gender" value = "ETC" /> 기타</label>
+		</div>
+		<div>
+			취미
+			<label><input type = "checkbox" name = "hobby" value = "M" /> 영화보기</label>
+			<label><input type = "checkbox" name = "hobby" value = "S" /> 음악듣기</label>
+			<label><input type = "checkbox" name = "hobby" value = "C" /> 수집</label>
+		</div>
+		<div>
+			<input type="submit" velue="확인"/>
+		</div>
+	
+	</form> 
+
+</body>
+</html>
+```
+
+```java
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%
+
+	String strG = request.getParameter("gender");	
+	out.print(strG);  // 옛날엔 에러났는데 지금은 된다.. ?
+
+	String[] strGender = request.getParameterValues("gender");  //배열로 받아야함 ?
+	String[] strHobbies = request.getParameterValues("hobby");
+	
+	if(strGender != null){  // strHobbies
+		
+		out.print(strGender.length);
+		
+		for(int i=0; i< strGender.length; i++){
+		
+			out.print(strGender[i] + "<br/>");
+		}
+	}
+	else{
+		out.print("선택안함");
+	}
+	
+%>
+```
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/61d6d9b1-b8c9-41e6-9d8d-4233a36526f9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/61d6d9b1-b8c9-41e6-9d8d-4233a36526f9/Untitled.png)
